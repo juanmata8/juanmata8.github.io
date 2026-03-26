@@ -22,10 +22,12 @@ export default function NightShiftStory() {
         />
         
         <MapVisualization />
+
+
+        <CalendarVisualization />
         
         <RhythmVisualization />
         
-        <CalendarVisualization />
       </div>
       
       <Footer />

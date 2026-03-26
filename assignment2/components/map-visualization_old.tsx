@@ -10,7 +10,7 @@ export function MapVisualization() {
   const [percentage, setPercentage] = useState(0)
   
   const sectionRef = useRef<HTMLDivElement>(null)
-  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const iframeRef = useRef<HTMLIFrameElement>(null) // Added ref for the map
   const [hasAnimated, setHasAnimated] = useState(false)
 
   // ── LOGIC 1: Tell the Map to change when the Year state changes ──────
@@ -34,6 +34,7 @@ export function MapVisualization() {
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
+  // ── (Rest of your existing Scrollytelling/Auto-play Logic) ───────────
   const handleScroll = useCallback(() => {
     if (!sectionRef.current) return
     const rect = sectionRef.current.getBoundingClientRect()
@@ -51,16 +52,17 @@ export function MapVisualization() {
     if (!isPlaying) return
     const interval = setInterval(() => {
       setYear((prev) => (prev >= 2025 ? 2003 : prev + 1))
-    }, 800)
+    }, 800) // Match the 800ms duration from Python
     return () => clearInterval(interval)
   }, [isPlaying])
+
+  // (Removed getHeatmapPosition as the Plotly map handles the visual now)
 
   return (
     <section ref={sectionRef} className="relative min-h-[200vh]">
       <div className="sticky top-0 min-h-screen flex items-center py-12">
         <div className="w-full max-w-[800px] mx-auto px-4 sm:px-6">
           
-          {/* ── HEADER: Title and Year Aligned ── */}
           <div 
             className="mb-8"
             style={{
@@ -72,23 +74,14 @@ export function MapVisualization() {
             <div className="overflow-hidden mb-2">
               <p className="text-primary font-sans text-xs tracking-[0.25em] uppercase">Visualization I</p>
             </div>
-            
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
-                  The Spatial Evolution
-              </h2>
-              {/* Year moved here, aligned with the heading */}
-              <div className="text-5xl sm:text-6xl font-serif font-bold text-primary opacity-40 tabular-nums leading-none">
-                {year}
-              </div>
-            </div>
-
-            <p className="font-sans text-muted-foreground leading-relaxed text-lg mt-4">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
+               The Spatial Evolution
+            </h2>
+            <p className="font-sans text-muted-foreground leading-relaxed text-lg">
               Watch how incident locations have migrated across San Francisco over two decades.
             </p>
           </div>
 
-          {/* ── MAP FIGURE ── */}
           <div 
             className="relative w-full aspect-[4/3] sm:aspect-video bg-[#151719] rounded-2xl overflow-hidden border border-border"
             style={{
@@ -97,38 +90,39 @@ export function MapVisualization() {
               transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
+            {/* ── UPDATED IFRAME: Linked with ref ── */}
             <iframe 
                 ref={iframeRef}
                 src="/prostitution_map.html" 
                 className="w-full h-full border-0"
                 scrolling="no"
             />
-          </div>
 
-          {/* ── CONTROLS: Now under the figure ── */}
-          <div 
-            className="mt-6 flex items-center gap-4 bg-background/50 backdrop-blur-md rounded-xl p-4 border border-border/50"
-            style={{
-              opacity: scrollProgress > 0.15 ? 1 : 0,
-              transition: 'all 0.8s ease-out 0.2s',
-            }}
-          >
-            <button 
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
-            >
-              {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
-            </button>
-            
-            <div className="flex-1">
-              <input 
-                type="range" min="2003" max="2025" value={year}
-                onChange={(e) => {
-                  setYear(parseInt(e.target.value))
-                  setIsPlaying(false)
-                }}
-                className="w-full h-2 bg-border rounded-full appearance-none cursor-pointer accent-primary"
-              />
+            <div className="absolute top-8 right-10 pointer-events-none">
+              <div className="text-6xl sm:text-7xl font-serif font-bold text-primary opacity-40 tabular-nums">
+                {year}
+              </div>
+            </div>
+
+            {/* Playback controls - Unified with the Map */}
+            <div className="absolute bottom-4 left-4 right-4 flex items-center gap-4 bg-background/90 backdrop-blur-md rounded-xl p-4 border border-border/50">
+              <button 
+                onClick={() => setIsPlaying(!isPlaying)}
+                className="w-12 h-12 flex items-center justify-center rounded-full bg-primary text-primary-foreground"
+              >
+                {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
+              </button>
+              
+              <div className="flex-1">
+                <input 
+                  type="range" min="2003" max="2025" value={year}
+                  onChange={(e) => {
+                    setYear(parseInt(e.target.value))
+                    setIsPlaying(false)
+                  }}
+                  className="w-full h-2 bg-border rounded-full appearance-none cursor-pointer accent-primary"
+                />
+              </div>
             </div>
           </div>
 
@@ -137,7 +131,7 @@ export function MapVisualization() {
             <span className="text-foreground font-medium">Figure 1:</span> Migration from Tenderloin to Mission District.
           </div>
 
-          {/* Insight callout */}
+          {/* Insight callout showing the dynamic percentage */}
           <div className="mt-10 relative overflow-hidden">
             <div className="p-8 bg-gradient-to-br from-card to-card/50 border border-border rounded-2xl relative">
               <div className="relative flex flex-col sm:flex-row gap-6 items-start">
