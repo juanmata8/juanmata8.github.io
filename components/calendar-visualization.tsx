@@ -8,6 +8,7 @@ export function CalendarVisualization() {
   const [valentineCount, setValentineCount] = useState(0)
   const [covidCount, setCovidCount] = useState(0)
   const [hasCountStarted, setHasCountStarted] = useState(false)
+  const [calendarData, setCalendarData] = useState<number[]>([]);
   
   const sectionRef = useRef<HTMLDivElement>(null)
 
@@ -54,21 +55,24 @@ export function CalendarVisualization() {
   }, [hasCountStarted])
 
   // Generate fake calendar data for animation
-  const generateCalendarData = () => {
+  // 2. Generate the data only ONCE after the component mounts
+  useEffect(() => {
     const data = []
     for (let week = 0; week < 52; week++) {
       for (let day = 0; day < 7; day++) {
-        // Create realistic-looking pattern with weekends hotter
         const isWeekend = day === 0 || day === 6
         const base = isWeekend ? 0.6 : 0.3
         const variation = Math.random() * 0.4
         data.push(base + variation)
       }
     }
-    return data
-  }
+    setCalendarData(data)
+  }, []) // Empty dependency array means it only runs on the client
 
-  const calendarData = generateCalendarData()
+  // 3. Handle the initial render (when data is empty)
+  if (calendarData.length === 0) {
+    return null; // Or a loading skeleton
+  }
 
   return (
     <section ref={sectionRef} className="relative min-h-[200vh]">
