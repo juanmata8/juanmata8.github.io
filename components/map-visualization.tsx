@@ -99,7 +99,7 @@ export function MapVisualization() {
           >
             <iframe 
                 ref={iframeRef}
-                src="/prostitution_map.html" 
+                src="prostitution_map.html" 
                 className="w-full h-full border-0"
                 scrolling="no"
             />
