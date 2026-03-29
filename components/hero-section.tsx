@@ -23,15 +23,24 @@ export function HeroSection() {
   const scale = 1 + scrollProgress * 0.15
   const blur = scrollProgress * 10
 
+  // Helper for smooth scrolling to sections
+  const scrollToMethodology = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const element = document.getElementById('methodology');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <header 
+    <header
       ref={heroRef}
       className="relative min-h-[120vh] flex flex-col justify-center items-center overflow-hidden"
     >
       {/* Morphing gradient background */}
-      <div 
+      <div
         className="absolute inset-0 transition-transform duration-75 ease-out will-change-transform"
-        style={{ 
+        style={{
           transform: `scale(${scale})`,
           filter: `blur(${blur}px)`,
           background: `
@@ -45,7 +54,7 @@ export function HeroSection() {
 
       {/* Animated fog layers */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div 
+        <div
           className="absolute w-[200%] h-[200%] -left-1/2 -top-1/2"
           style={{
             background: 'radial-gradient(ellipse at center, transparent 30%, oklch(0.12 0.01 260 / 0.3) 70%)',
@@ -67,8 +76,8 @@ export function HeroSection() {
               height: `${2 + (i % 3)}px`,
               left: `${5 + (i * 3.1) % 90}%`,
               top: `${10 + (i * 5.7) % 80}%`,
-              background: i % 5 === 0 
-                ? 'oklch(0.65 0.2 30 / 0.6)' 
+              background: i % 5 === 0
+                ? 'oklch(0.65 0.2 30 / 0.6)'
                 : 'oklch(0.7 0.02 260 / 0.4)',
               transform: `translateY(${scrollY * (0.05 + (i % 10) * 0.015)}px)`,
               opacity: isLoaded ? (0.3 + (i % 3) * 0.2) : 0,
@@ -81,16 +90,16 @@ export function HeroSection() {
       </div>
 
       {/* Main content with parallax */}
-      <div 
+      <div
         className="relative z-10 text-center max-w-4xl mx-auto px-6"
-        style={{ 
+        style={{
           opacity,
           transform: `translateY(${scrollY * 0.3}px)`,
         }}
       >
         {/* Overline with reveal */}
         <div className="overflow-hidden mb-8">
-          <p 
+          <p
             className="text-primary font-sans text-xs sm:text-sm tracking-[0.4em] uppercase"
             style={{
               transform: isLoaded ? 'translateY(0)' : 'translateY(100%)',
@@ -98,7 +107,7 @@ export function HeroSection() {
               transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, opacity 0.8s ease 0.3s',
             }}
           >
-            A Data Investigation
+            Social Data Analysis
           </p>
         </div>
 
@@ -106,11 +115,11 @@ export function HeroSection() {
         <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold leading-[0.9] tracking-tight mb-6">
           {['The', 'Night', 'Shift'].map((word, i) => (
             <span key={word} className="inline-block overflow-hidden mr-[0.2em] last:mr-0">
-              <span 
+              <span
                 className={`inline-block ${word === 'Night' ? 'text-primary' : 'text-foreground'}`}
                 style={{
-                  transform: isLoaded 
-                    ? 'translateY(0) rotate(0deg)' 
+                  transform: isLoaded
+                    ? 'translateY(0) rotate(0deg)'
                     : 'translateY(110%) rotate(3deg)',
                   opacity: isLoaded ? 1 : 0,
                   transition: `transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) ${0.4 + i * 0.08}s, opacity 0.6s ease ${0.4 + i * 0.08}s`,
@@ -124,7 +133,7 @@ export function HeroSection() {
 
         {/* Subtitle */}
         <div className="overflow-hidden mb-10">
-          <p 
+          <p
             className="font-serif text-xl sm:text-2xl md:text-3xl text-muted-foreground text-balance"
             style={{
               transform: isLoaded ? 'translateY(0)' : 'translateY(100%)',
@@ -137,7 +146,7 @@ export function HeroSection() {
         </div>
 
         {/* Animated divider */}
-        <div 
+        <div
           className="h-px w-32 mx-auto mb-10 bg-gradient-to-r from-transparent via-primary/60 to-transparent"
           style={{
             transform: isLoaded ? 'scaleX(1)' : 'scaleX(0)',
@@ -147,7 +156,7 @@ export function HeroSection() {
 
         {/* Opening paragraphs with stagger */}
         <div className="max-w-xl mx-auto space-y-6">
-          <p 
+          <p
             className="font-sans text-base sm:text-lg text-muted-foreground leading-relaxed"
             style={{
               opacity: isLoaded ? 1 : 0,
@@ -155,10 +164,10 @@ export function HeroSection() {
               transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 1s',
             }}
           >
-            A friend from Amsterdam once asked me during a business trip:
+            We all have that friend who travels to Amsterdam too often, claiming to be on a "business trip," but who always ends up in the Red Light District.
           </p>
-          
-          <blockquote 
+
+          <blockquote
             className="relative font-serif text-xl sm:text-2xl text-primary/90 italic py-4"
             style={{
               opacity: isLoaded ? 1 : 0,
@@ -166,22 +175,22 @@ export function HeroSection() {
               transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 1.15s',
             }}
           >
-            <span 
+            <span
               className="absolute -left-4 -top-2 text-5xl text-primary/20 font-serif"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               &ldquo;
             </span>
-            Where does the city hide its oldest trade at night?
-            <span 
+            Which places in San Francisco should he visit to experience this?
+            <span
               className="absolute -right-2 bottom-0 text-5xl text-primary/20 font-serif"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               &rdquo;
             </span>
           </blockquote>
-          
-          <p 
+
+          <p
             className="font-sans text-base sm:text-lg text-muted-foreground leading-relaxed"
             style={{
               opacity: isLoaded ? 1 : 0,
@@ -189,14 +198,22 @@ export function HeroSection() {
               transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 1.3s',
             }}
           >
-            The answer has been shifting through San Francisco&apos;s fog-shrouded streets 
-            for over two decades—leaving behind a trail of 230,000 data points.
+            We analyzed over two decades of SFPD incident reports to map the shifting geography of prostitution in San Francisco.
+            Because this data tracks reported activity, it often reflects enforcement patterns and historical policing trends rather than the total scope of the trade.
+            {' '}
+            <a
+              href="#methodology"
+              onClick={scrollToMethodology}
+              className="text-primary hover:text-primary/80 underline decoration-primary/30 underline-offset-4 transition-colors cursor-pointer"
+            >
+              Read more in the methodology.
+            </a>
           </p>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div 
+      <div
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
         style={{
           opacity: isLoaded && opacity > 0.5 ? 1 : 0,
@@ -208,7 +225,7 @@ export function HeroSection() {
           Scroll to explore
         </span>
         <div className="relative w-5 h-8 rounded-full border border-muted-foreground/30">
-          <div 
+          <div
             className="absolute left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
             style={{ animation: 'scrollPulse 2s ease-in-out infinite' }}
           />
