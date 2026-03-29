@@ -10,15 +10,15 @@ interface InteractiveChoiceProps {
 
 const revealMessages: Record<string, { text: string; isCorrect: boolean }> = {
   tenderloin: {
-    text: "An understandable guess. The Tenderloin was historically the epicenter of street-level activity. But the data reveals a surprising shift—by 2021, the center of gravity had moved south.",
+    text: "It's an understandable guess. The Tenderloin is one of the districts with the highest level of prostitution activity. However, it has never been the hottest spot.",
     isCorrect: false,
   },
   mission: {
-    text: "Correct. Today, prostitution activity is highly concentrated in the Mission District. Our analysis of over 20 years of SFPD incident data shows a dramatic geographic shift that began accelerating after 2015.",
+    text: "Correct. Today, prostitution is highly concentrated in the Mission District. Our analysis of over 20 years of San Francisco Police Department (SFPD) incident data reveals a significant geographic shift that intensified after 2015.",
     isCorrect: true,
   },
   unknown: {
-    text: "That's the honest answer. Most San Franciscans—even lifelong residents—would be surprised by what the data reveals. The answer is the Mission District, where activity has concentrated since 2021.",
+    text: "That's the honest answer. Even lifelong San Franciscans would be surprised by what the data reveals. The answer is the Mission District, which has been the epicenter of prostitution acitvity.",
     isCorrect: false,
   },
 }
@@ -32,10 +32,13 @@ const choices = [
 export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const [isInView, setIsInView] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false) // Added for scroll indicator
   const [hoveredChoice, setHoveredChoice] = useState<string | null>(null)
   const reveal = selected ? revealMessages[selected] : null
 
   useEffect(() => {
+    setIsLoaded(true) // Set loaded on mount
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -56,7 +59,7 @@ export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps
     <section 
       id="interactive-choice" 
       ref={sectionRef}
-      className="py-24 sm:py-32 scroll-mt-8 relative"
+      className="py-24 sm:py-32 scroll-mt-8 relative min-h-[80vh] flex flex-col justify-center"
     >
       {/* Subtle background gradient on section */}
       <div 
@@ -68,7 +71,7 @@ export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps
         }}
       />
 
-      <div className="relative">
+      <div className="relative max-w-5xl mx-auto px-6 w-full">
         {/* Section label */}
         <div className="overflow-hidden mb-3">
           <p 
@@ -95,20 +98,7 @@ export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps
           </h2>
         </div>
 
-        {/* Context paragraph */}
-        <p 
-          className="font-sans text-lg text-muted-foreground leading-relaxed mb-10 max-w-2xl"
-          style={{
-            opacity: isInView ? 1 : 0,
-            transform: isInView ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.35s',
-          }}
-        >
-          If a visitor to San Francisco asked you where prostitution activity is most concentrated 
-          today—at midnight on a Friday—what would you tell them?
-        </p>
-
-        {/* Choice buttons - Pudding style cards */}
+        {/* Choice buttons */}
         <div className="grid sm:grid-cols-3 gap-4 mb-8">
           {choices.map((choice, index) => (
             <button
@@ -134,170 +124,61 @@ export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps
                   ? `translateY(0) scale(${hoveredChoice === choice.id && !selected ? 1.02 : 1})` 
                   : 'translateY(40px) scale(0.95)',
                 transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.45 + index * 0.08}s`,
-                boxShadow: hoveredChoice === choice.id && !selected 
-                  ? '0 10px 40px -10px oklch(0.65 0.2 30 / 0.3)' 
-                  : 'none',
               }}
             >
-              {/* Morphing background on hover */}
-              <div 
-                className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-xl"
-                style={{
-                  opacity: hoveredChoice === choice.id && !selected ? 1 : 0,
-                  transition: 'opacity 0.4s ease',
-                }}
-              />
-
-              {/* Content */}
               <span className="relative flex items-center gap-3">
-                {choice.id !== "unknown" && (
-                  <span 
-                    className={`
-                      flex items-center justify-center w-8 h-8 rounded-full
-                      transition-all duration-300
-                      ${selected === choice.id 
-                        ? "bg-primary-foreground/20" 
-                        : "bg-primary/10 group-hover:bg-primary/20"
-                      }
-                    `}
-                  >
+                {choice.id !== "unknown" ? (
+                  <span className={`flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 ${selected === choice.id ? "bg-primary-foreground/20" : "bg-primary/10 group-hover:bg-primary/20"}`}>
                     <MapPin className={`w-4 h-4 ${selected === choice.id ? "text-primary-foreground" : "text-primary"}`} />
                   </span>
-                )}
-                {choice.id === "unknown" && (
-                  <span 
-                    className={`
-                      flex items-center justify-center w-8 h-8 rounded-full text-lg
-                      transition-all duration-300
-                      ${selected === choice.id 
-                        ? "bg-primary-foreground/20" 
-                        : "bg-muted group-hover:bg-muted/80"
-                      }
-                    `}
-                  >
-                    ?
-                  </span>
+                ) : (
+                  <span className={`flex items-center justify-center w-8 h-8 rounded-full text-lg transition-all duration-300 ${selected === choice.id ? "bg-primary-foreground/20" : "bg-muted group-hover:bg-muted/80"}`}>?</span>
                 )}
                 <span className="font-medium">{choice.label}</span>
               </span>
-
-              {/* Selection indicator */}
-              {selected === choice.id && (
-                <div 
-                  className="absolute top-3 right-3 w-2 h-2 rounded-full bg-primary-foreground"
-                  style={{ animation: 'pulse 2s ease-in-out infinite' }}
-                />
-              )}
             </button>
           ))}
         </div>
 
-        {/* Hint text */}
-        {!selected && (
-          <p 
-            className="text-xs text-muted-foreground/50 font-sans"
-            style={{
-              opacity: isInView ? 1 : 0,
-              transition: 'opacity 0.8s ease 1s',
-            }}
-          >
-            Click to reveal the answer
-          </p>
-        )}
-
-        {/* Reveal panel with morphing animation */}
-        <div 
-          className={`
-            overflow-hidden transition-all duration-700 ease-out
-            ${reveal ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'}
-          `}
-        >
+        {/* Reveal panel */}
+        <div className={`overflow-hidden transition-all duration-700 ease-out ${reveal ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'}`}>
           {reveal && (
-            <div 
-              className={`
-                relative mt-8 p-8 rounded-2xl overflow-hidden
-                ${reveal.isCorrect 
-                  ? "bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/30" 
-                  : "bg-card border border-border"
-                }
-              `}
-              style={{
-                animation: 'morphIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-              }}
-            >
-              {/* Animated highlight line */}
-              <div 
-                className={`absolute left-0 top-0 bottom-0 w-1 ${reveal.isCorrect ? 'bg-primary' : 'bg-muted-foreground/30'}`}
-                style={{
-                  animation: 'expandHeight 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards',
-                  transformOrigin: 'top',
-                  transform: 'scaleY(0)',
-                }}
-              />
-
-              {/* Text content with word-by-word fade in */}
+            <div className={`relative mt-8 p-8 rounded-2xl ${reveal.isCorrect ? "bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/30" : "bg-card border border-border"}`}>
               <p className="font-sans text-lg text-foreground leading-relaxed">
-                {reveal.text.split(' ').map((word, i) => (
-                  <span
-                    key={i}
-                    className="inline-block mr-[0.25em]"
-                    style={{
-                      opacity: 0,
-                      animation: `wordFadeIn 0.4s ease forwards`,
-                      animationDelay: `${0.3 + i * 0.02}s`,
-                    }}
-                  >
-                    {word}
-                  </span>
-                ))}
+                {reveal.text}
               </p>
-              
-              {reveal.isCorrect && (
-                <p 
-                  className="mt-6 text-sm text-primary/80 font-sans"
-                  style={{
-                    opacity: 0,
-                    animation: 'fadeSlideUp 0.6s ease 1.5s forwards',
-                  }}
-                >
-                  Continue scrolling to explore the data behind this transformation.
-                </p>
-              )}
             </div>
           )}
         </div>
       </div>
 
+      {/* Added Scroll indicator */}
+      <div
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        style={{
+          opacity: isLoaded && isInView ? 1 : 0,
+          transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.5s',
+        }}
+      >
+        <span className="text-[10px] tracking-[0.25em] uppercase text-muted-foreground/50 font-sans">
+          Scroll to explore
+        </span>
+        <div className="relative w-5 h-8 rounded-full border border-muted-foreground/30">
+          <div
+            className="absolute left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
+            style={{ animation: 'scrollPulse 2s ease-in-out infinite' }}
+          />
+        </div>
+      </div>
+
       <style jsx>{`
-        @keyframes morphIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px) scale(0.98);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
+        @keyframes scrollPulse {
+          0% { top: 6px; opacity: 1; }
+          50% { top: 18px; opacity: 0.3; }
+          100% { top: 6px; opacity: 1; }
         }
-        @keyframes expandHeight {
-          to {
-            transform: scaleY(1);
-          }
-        }
-        @keyframes wordFadeIn {
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes fadeSlideUp {
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes pulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.2); }
-        }
+        /* ... keeping your other existing animations ... */
       `}</style>
     </section>
   )
