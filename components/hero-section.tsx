@@ -190,25 +190,7 @@ export function HeroSection() {
             </span>
           </blockquote>
 
-          <p
-            className="font-sans text-base sm:text-lg text-muted-foreground leading-relaxed"
-            style={{
-              opacity: isLoaded ? 1 : 0,
-              transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
-              transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1) 1.3s',
-            }}
-          >
-            We analyzed over two decades of SFPD incident reports to map the shifting geography of prostitution in San Francisco.
-            Because this data tracks reported activity, it often reflects enforcement patterns and historical policing trends rather than the total scope of the trade.
-            {' '}
-            <a
-              href="#methodology"
-              onClick={scrollToMethodology}
-              className="text-primary hover:text-primary/80 underline decoration-primary/30 underline-offset-4 transition-colors cursor-pointer"
-            >
-              Read more in the methodology.
-            </a>
-          </p>
+
         </div>
       </div>
 

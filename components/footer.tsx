@@ -145,7 +145,7 @@ export function Footer() {
 
         {/* Methodology note */}
         <div
-          id="methodology"
+          id="methodology-footer"
           className="mb-12 p-8 bg-card/50 backdrop-blur-sm border border-border rounded-2xl"
           style={{
             opacity: scrollProgress > 0.45 ? 1 : 0,

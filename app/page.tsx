@@ -7,6 +7,8 @@ import { MapVisualization } from "@/components/map-visualization"
 import { RhythmVisualization } from "@/components/rhythm-visualization"
 import { CalendarVisualization } from "@/components/calendar-visualization"
 import { Footer } from "@/components/footer"
+import { MethodologyCard } from "@/components/methodology-card"
+
 
 export default function NightShiftStory() {
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<string | null>(null)
@@ -20,6 +22,8 @@ export default function NightShiftStory() {
           selected={selectedNeighborhood}
           onSelect={setSelectedNeighborhood}
         />
+
+        <MethodologyCard />
         
         <MapVisualization />
 
