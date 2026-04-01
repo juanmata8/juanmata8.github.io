@@ -213,6 +213,16 @@ export function Footer() {
           <ul className="space-y-4">
             {[
               { href: "https://data.sfgov.org/", text: "SF Open Data Portal", subtitle: "SFPD Incident Reports (2003-2025)" },
+              {
+                href: "https://www.wrtv.com/longform/dear-john-when-men-buy-sex-its-the-women-who-pay-for-it",
+                text: "WRTV Investigative Series",
+                subtitle: "Dear John: When men buy sex, it's the women who pay for it"
+              },
+              {
+                href: 'https://doi.org/10.1038/s41562-021-01139-z',
+                text: "Nature Human Behaviour",
+                subtitle: "A global analysis of the impact of COVID-19 stay-at-home restrictions on crime"
+              },
               { href: "https://doi.org/10.1109/TVCG.2010.179", text: "Segel & Heer", subtitle: "Narrative Visualization Framework" },
               { href: "https://pudding.cool/", text: "The Pudding", subtitle: "Visual essay inspiration" },
             ].map((link, index) => (
