@@ -27,6 +27,7 @@ export function CalendarVisualization() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [handleScroll])
 
+  // Animated counters with the new target data
   useEffect(() => {
     if (!hasCountStarted) return
     const duration = 1200
@@ -34,9 +35,11 @@ export function CalendarVisualization() {
     const animate = () => {
       const elapsed = Date.now() - start
       const progress = Math.min(elapsed / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setValentineCount(Math.round(23 * eased))
-      setCovidCount(Math.round(78 * eased))
+      const eased = 1 - Math.pow(1 - progress, 3) 
+      
+      setValentineCount(Math.round(855 * eased))
+      setCovidCount(parseFloat((87.8 * eased).toFixed(1))) 
+      
       if (progress < 1) requestAnimationFrame(animate)
     }
     animate()
@@ -126,10 +129,29 @@ export function CalendarVisualization() {
           <div className="mt-10 grid sm:grid-cols-2 gap-4">
 
             {/* Valentine's Enforcement Spike */}
-            <div className="group p-6 bg-gradient-to-br from-red-500/10 to-transparent border border-red-500/20 rounded-2xl relative overflow-hidden">
+            <div 
+              className="group p-6 bg-gradient-to-br from-red-500/10 to-transparent border border-red-500/20 rounded-2xl relative overflow-hidden"
+              style={{
+                opacity: scrollProgress > 0.4 ? 1 : 0,
+                transform: scrollProgress > 0.4 ? 'translateX(0)' : 'translateX(-40px)',
+                transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+              <div 
+                className="absolute -top-4 -right-4 text-red-500/10"
+                style={{
+                  transform: scrollProgress > 0.45 ? 'scale(1) rotate(12deg)' : 'scale(0) rotate(0deg)',
+                  transition: 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s',
+                }}
+              >
+                <Heart className="w-24 h-24" fill="currentColor" />
+              </div>
+
               <div className="relative">
-                <div className="flex items-center gap-3 mb-2">
-                  <Heart className="w-5 h-5 text-red-500" />
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+                    <Heart className="w-5 h-5 text-red-500" />
+                  </div>
                   <h3 className="font-serif text-lg text-foreground font-semibold">
                     Valentine&apos;s Spike (Feb 15)
                   </h3>
@@ -137,7 +159,7 @@ export function CalendarVisualization() {
 
                 <div className="flex items-baseline gap-2 mb-3">
                   <span className="text-5xl font-serif font-bold text-red-500 tabular-nums">
-                    +855%
+                    +{valentineCount}%
                   </span>
                   <span className="text-muted-foreground text-xs uppercase tracking-widest font-semibold">
                     Above Daily Average
@@ -192,7 +214,7 @@ export function CalendarVisualization() {
 
                 <div className="flex items-baseline gap-2 mb-3">
                   <span className="text-5xl font-serif font-bold text-slate-600 tabular-nums">
-                    -87.8%
+                    -{covidCount}%
                   </span>
                   <span className="text-muted-foreground/60 text-xs uppercase tracking-widest font-semibold">
                     March 2020
@@ -214,10 +236,8 @@ export function CalendarVisualization() {
                 </p>
               </div>
             </div>
+            
           </div>
-
-
-
         </div>
       </div>
     </section>
