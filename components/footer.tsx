@@ -38,7 +38,7 @@ export function Footer() {
                 transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
-              Synthesis
+              Conclusion
             </p>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6">
@@ -58,7 +58,7 @@ export function Footer() {
           </h2>
         </div>
 
-        {/* Main narrative with word-by-word animation for key sentence */}
+        {/* Main narrative with scroll-based reveal animations */}
         <div className="space-y-6 mb-16">
           <p
             className="font-sans text-lg text-muted-foreground leading-relaxed"
@@ -68,35 +68,43 @@ export function Footer() {
               transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            Over two decades of data paint a clear picture: San Francisco&apos;s oldest trade
-            hasn&apos;t disappeared—it has{' '}
-            <span className="text-primary font-medium">adapted</span> and{' '}
-            <span className="text-primary font-medium">relocated</span>.
+            As seen, the Mission has always been a prostitution hotspot <a href="https://localnewsmatters.org/2023/08/17/sex-work-and-the-city-policing-prostitution-in-san-francisco-reflects-evolving-attitudes/" className="underline decoration-primary/50 hover:decoration-primary">[3]</a>. However, prostitution has declined for the following reasons:
           </p>
 
-          <p
-            className="font-sans text-lg text-muted-foreground leading-relaxed"
-            style={{
-              opacity: scrollProgress > 0.18 ? 1 : 0,
-              transform: scrollProgress > 0.18 ? 'translateY(0)' : 'translateY(30px)',
-              transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
-          >
-            The Tenderloin&apos;s historical dominance gave way to a more distributed pattern
-            in the 2010s, only for activity to reconcentrate dramatically in the Mission
-            District by 2021. The nocturnal rhythm remains unchanged, but the geography has transformed.
-          </p>
+
+          <div className="space-y-4 pl-4 border-l-2 border-primary/20">
+            <p
+              className="font-sans text-lg text-muted-foreground leading-relaxed"
+              style={{
+                opacity: scrollProgress > 0.24 ? 1 : 0,
+                transform: scrollProgress > 0.24 ? 'translateY(0)' : 'translateY(30px)',
+                transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+              <span className="text-primary font-medium">1. Legislative Erasure:</span> The blank squares aren&apos;t empty streets; they&apos;re erased laws. The 2023 repeal of California&apos;s loitering law wiped out the charge responsible for <span className="text-foreground font-medium">65% of citations</span> <a href="https://localnewsmatters.org/2023/08/17/sex-work-and-the-city-policing-prostitution-in-san-francisco-reflects-evolving-attitudes/" className="underline decoration-primary/50 hover:decoration-primary">[3]</a>.
+            </p>
+
+            <p
+              className="font-sans text-lg text-muted-foreground leading-relaxed"
+              style={{
+                opacity: scrollProgress > 0.30 ? 1 : 0,
+                transform: scrollProgress > 0.30 ? 'translateY(0)' : 'translateY(30px)',
+                transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+              <span className="text-primary font-medium">2. Digital Migration:</span> The 2020 lockdowns broke the physical timeline. The nocturnal economy moved online, with platforms exploding from <span className="text-foreground font-medium">7.5 million to 80 million users</span> <a href="https://doi.org/10.3390/socsci12020062" className="underline decoration-primary/50 hover:decoration-primary">[4]</a>.
+            </p>
+          </div>
 
           <p
-            className="font-sans text-xl text-foreground font-medium leading-relaxed"
+            className="font-sans text-xl text-foreground font-medium leading-relaxed mt-8"
             style={{
-              opacity: scrollProgress > 0.24 ? 1 : 0,
-              transform: scrollProgress > 0.24 ? 'translateY(0)' : 'translateY(30px)',
+              opacity: scrollProgress > 0.36 ? 1 : 0,
+              transform: scrollProgress > 0.36 ? 'translateY(0)' : 'translateY(30px)',
               transition: 'all 0.9s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            This is not a story of eradication. It&apos;s a story of displacement, adaptation,
-            and the persistent human patterns that no amount of enforcement has managed to eliminate.
+            Empty data doesn&apos;t mean the activity vanished. It just evolved and adapt.
           </p>
         </div>
 
@@ -121,7 +129,7 @@ export function Footer() {
 
           <div className="pl-8">
             <p className="font-serif text-2xl sm:text-3xl text-foreground italic leading-snug">
-              {'"The city changes. The trade adapts. The data remembers."'.split(' ').map((word, i) => {
+              {'"The city changes. The law changes. The activity adapts. The data remembers."'.split(' ').map((word, i) => {
                 const wordProgress = 0.35 + (i * 0.015)
                 const isVisible = scrollProgress > wordProgress
 
@@ -175,7 +183,7 @@ export function Footer() {
             </ul>
 
             <p>
-              When analyzing potential duplicated records, we examined the incident number and code columns. However, we determined that these fields are not unique identifiers of individual records (rows), but rather identifiers of crimes [0]. A single crime can generate multiple records [0]. For example, an incident involving multiple offenses may be registered under several codes. To prevent duplicated records in the integrated dataset, we <em>removed crimes from the year 2018 in the historical dataset</em>, since the most recent dataset already begins on January 1, 2018. This ensured that overlapping periods did not introduce duplicated entries.
+              When analyzing potential duplicated records, we examined the incident number and code columns. However, we determined that these fields are not unique identifiers of individual records (rows), but rather identifiers of crimes <a href="https://data.sfgov.org/" className="underline decoration-primary/50 hover:decoration-primary">[0]</a>. A single crime can generate multiple records [0]. For example, an incident involving multiple offenses may be registered under several codes. To prevent duplicated records in the integrated dataset, we <em>removed crimes from the year 2018 in the historical dataset</em>, since the most recent dataset already begins on January 1, 2018. This ensured that overlapping periods did not introduce duplicated entries.
             </p>
 
             <div className="pt-4 border-t border-border/40">
@@ -212,7 +220,6 @@ export function Footer() {
 
           <ul className="space-y-4">
             {[
-              { href: "https://data.sfgov.org/", text: "SF Open Data Portal", subtitle: "SFPD Incident Reports (2003-2025)" },
               {
                 href: "https://www.wrtv.com/longform/dear-john-when-men-buy-sex-its-the-women-who-pay-for-it",
                 text: "WRTV Investigative Series",
@@ -223,6 +230,17 @@ export function Footer() {
                 text: "Nature Human Behaviour",
                 subtitle: "A global analysis of the impact of COVID-19 stay-at-home restrictions on crime"
               },
+              {
+                href: 'https://localnewsmatters.org/2023/08/17/sex-work-and-the-city-policing-prostitution-in-san-francisco-reflects-evolving-attitudes/',
+                text: "Local News Matter",
+                subtitle: "Sex work and the city: How the policing of prostitution in San Francisco has evolved"
+              },
+              {
+                href: 'https://doi.org/10.3390/socsci12020062',
+                text: "MDPI Social Sciences",
+                subtitle: "‘Cam Girls and Adult Performers Are Enjoying a Boom in Business’: The Reportage on the Pandemic Impact on Virtual Sex Work"
+              },
+              { href: "https://data.sfgov.org/", text: "SF Open Data Portal", subtitle: "SFPD Incident Reports (2003-2025)" },
               { href: "https://doi.org/10.1109/TVCG.2010.179", text: "Segel & Heer", subtitle: "Narrative Visualization Framework" },
               { href: "https://pudding.cool/", text: "The Pudding", subtitle: "Visual essay inspiration" },
             ].map((link, index) => (

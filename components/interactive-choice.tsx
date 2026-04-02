@@ -14,7 +14,7 @@ const revealMessages: Record<string, { text: string; isCorrect: boolean }> = {
     isCorrect: false,
   },
   mission: {
-    text: "Correct. Today, prostitution is highly concentrated in the Mission District. Our analysis of over 20 years of San Francisco Police Department (SFPD) incident data reveals a significant geographic shift that intensified after 2015.",
+    text: "Correct. Prostitution is highly concentrated in the Mission District.",
     isCorrect: true,
   },
   unknown: {
