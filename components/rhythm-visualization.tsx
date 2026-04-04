@@ -16,14 +16,14 @@ const CRIMES: Crime[] = [
 ]
 
 const PALETTE: Record<Crime, string> = {
-  "PROSTITUTION":    "#ff8c00",
-  "LARCENY/THEFT":   "#4CC9F0",
-  "VEHICLE THEFT":   "#F72585",
-  "MISSING PERSON":  "#B8F35D",
-  "WARRANTS":        "#FFD166",
+  "PROSTITUTION": "#ff8c00",
+  "LARCENY/THEFT": "#4CC9F0",
+  "VEHICLE THEFT": "#F72585",
+  "MISSING PERSON": "#B8F35D",
+  "WARRANTS": "#FFD166",
   "STOLEN PROPERTY": "#06D6A0",
-  "BURGLARY":        "#EF476F",
-  "EMBEZZLEMENT":    "#C77DFF",
+  "BURGLARY": "#EF476F",
+  "EMBEZZLEMENT": "#C77DFF",
 }
 
 const YEARS = Array.from({ length: 23 }, (_, i) => 2003 + i)  // 2003–2025
@@ -33,15 +33,15 @@ const DEFAULT_YEAR = 2025
 
 export function RhythmVisualization() {
   const [scrollProgress, setScrollProgress] = useState(0)
-  const [activeSet, setActiveSet]   = useState<Set<Crime>>(new Set([LOCKED_CRIME]))
-  const [year, setYear]             = useState(DEFAULT_YEAR)
+  const [activeSet, setActiveSet] = useState<Set<Crime>>(new Set([LOCKED_CRIME]))
+  const [year, setYear] = useState(DEFAULT_YEAR)
   const sectionRef = useRef<HTMLDivElement>(null)
-  const iframeRef  = useRef<HTMLIFrameElement>(null)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
 
   // ── Scroll ───────────────────────────────────────────────────────────────
   const handleScroll = useCallback(() => {
     if (!sectionRef.current) return
-    const rect     = sectionRef.current.getBoundingClientRect()
+    const rect = sectionRef.current.getBoundingClientRect()
     const progress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / rect.height))
     setScrollProgress(progress)
   }, [])
@@ -77,7 +77,7 @@ export function RhythmVisualization() {
   const toggleCrime = useCallback((crime: Crime) => {
     if (crime === LOCKED_CRIME) return
     setActiveSet(prev => {
-      const next    = new Set(prev)
+      const next = new Set(prev)
       const visible = !next.has(crime)
       visible ? next.add(crime) : next.delete(crime)
       post({ type: "SET_TRACE_VISIBILITY", crime, visible })
@@ -87,8 +87,8 @@ export function RhythmVisualization() {
 
   // ── Reveal helper ────────────────────────────────────────────────────────
   const reveal = (threshold: number, extra?: React.CSSProperties): React.CSSProperties => ({
-    opacity:    scrollProgress > threshold ? 1 : 0,
-    transform:  scrollProgress > threshold ? "translateY(0)" : "translateY(40px)",
+    opacity: scrollProgress > threshold ? 1 : 0,
+    transform: scrollProgress > threshold ? "translateY(0)" : "translateY(40px)",
     transition: "opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)",
     ...extra,
   })
@@ -107,6 +107,14 @@ export function RhythmVisualization() {
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
               The Rhythm of the Night
             </h2>
+          </div>
+
+          {/* NEW: Introductory/Instructional Sentence */}
+          <div className="mb-8 max-w-[600px]" style={reveal(0.08)}>
+            <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+              While most crimes follow the sun, others only wake up when it sets.
+              <span className="text-foreground"> Compare the different types of crime that occur on the streets by selecting the relevant categories from the list below.</span>
+            </p>
           </div>
 
           {/* Controls row — year picker + crime chips */}
@@ -140,8 +148,8 @@ export function RhythmVisualization() {
                   width="10" height="6" viewBox="0 0 10 6" fill="none"
                 >
                   <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.5"
-                        strokeLinecap="round" strokeLinejoin="round"
-                        className="text-muted-foreground" />
+                    strokeLinecap="round" strokeLinejoin="round"
+                    className="text-muted-foreground" />
                 </svg>
               </div>
             </div>
@@ -154,7 +162,7 @@ export function RhythmVisualization() {
               {CRIMES.map(crime => {
                 const locked = crime === LOCKED_CRIME
                 const active = activeSet.has(crime)
-                const color  = PALETTE[crime]
+                const color = PALETTE[crime]
 
                 return (
                   <button
@@ -165,10 +173,10 @@ export function RhythmVisualization() {
                                tracking-wide transition-all duration-300 ease-out
                                disabled:cursor-default"
                     style={{
-                      border:     `1px solid ${active || locked ? color : "rgba(255,255,255,0.12)"}`,
+                      border: `1px solid ${active || locked ? color : "rgba(255,255,255,0.12)"}`,
                       background: active || locked ? `${color}18` : "transparent",
-                      color:      active || locked ? color : "rgba(255,255,255,0.35)",
-                      boxShadow:  active || locked ? `0 0 10px ${color}20` : "none",
+                      color: active || locked ? color : "rgba(255,255,255,0.35)",
+                      boxShadow: active || locked ? `0 0 10px ${color}20` : "none",
                     }}
                   >
                     <span
