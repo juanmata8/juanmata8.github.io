@@ -8,7 +8,7 @@ export function MapVisualization() {
   const [year, setYear] = useState(2003)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [percentage, setPercentage] = useState(0)
-
+  const [totalIncidents, setTotalIncidents] = useState(0) // New state
   const sectionRef = useRef<HTMLDivElement>(null)
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [hasAnimated, setHasAnimated] = useState(false)
@@ -21,15 +21,17 @@ export function MapVisualization() {
   }, [year])
 
   // ── Listen for percentage updates sent back from the iframe ──────────
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (event.data.type === "UPDATE_PCT") {
-        setPercentage(Math.round(event.data.percentage))
-      }
+useEffect(() => {
+  const handleMessage = (event: MessageEvent) => {
+    // Check for the new type 'UPDATE_DATA'
+    if (event.data.type === "UPDATE_DATA") {
+      setPercentage(Math.round(event.data.percentage))
+      setTotalIncidents(event.data.total) // Set the total
     }
-    window.addEventListener("message", handleMessage)
-    return () => window.removeEventListener("message", handleMessage)
-  }, [])
+  }
+  window.addEventListener("message", handleMessage)
+  return () => window.removeEventListener("message", handleMessage)
+}, [])
 
   // ── Scroll progress ──────────────────────────────────────────────────
   const handleScroll = useCallback(() => {
@@ -209,34 +211,33 @@ export function MapVisualization() {
           {/* ── Insight callout ── */}
           <div
             className="mt-10"
-            style={{
-              opacity: scrollProgress > 0.15 ? 1 : 0,
-              transition: "opacity 0.6s ease 0.5s",
-            }}
+            style={{ opacity: scrollProgress > 0.15 ? 1 : 0, transition: "opacity 0.6s ease 0.5s" }}
           >
-            <div
-              className="p-8 rounded-2xl"
-              style={{
-                background: "rgba(217,119,87,0.05)",
-                border: "1px solid rgba(217,119,87,0.15)",
-              }}
-            >
-              <div className="flex flex-col sm:flex-row gap-6 items-start">
-                <div
-                  className="font-serif font-bold tabular-nums flex-shrink-0"
-                  style={{ fontSize: "clamp(2.5rem,6vw,3.5rem)", color: "#d97757", lineHeight: 1 }}
-                >
-                  {percentage}%
+            <div className="p-8 rounded-2xl bg-[#d97757]/5 border border-[#d97757]/15">
+              <div className="flex flex-col sm:flex-row gap-8 items-center">
+                
+                {/* Big Stat */}
+                <div className="text-center sm:text-left">
+                  <div className="font-serif font-bold tabular-nums text-[#d97757]" style={{ fontSize: "3rem", lineHeight: 1 }}>
+                    {percentage}%
+                  </div>
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">District Share</p>
                 </div>
+
+                {/* Vertical Divider */}
+                <div className="hidden sm:block w-px h-12 bg-[#d97757]/20" />
+
+                {/* Description */}
                 <div>
-                  <p className="font-sans text-lg text-foreground font-medium mb-2">
+                  <p className="font-sans text-lg text-foreground font-medium mb-1">
                     Mission District Concentration
                   </p>
                   <p className="font-sans text-muted-foreground leading-relaxed">
-                    By {year}, {percentage}% of all reported incidents are concentrated within
-                    the Mission district.
+                    In <span className="text-foreground font-semibold">{year}</span>, there were <span className="text-foreground font-semibold">{totalIncidents.toLocaleString()}</span> citywide incidents. 
+                    The Mission district accounted for <span className="text-[#d97757] font-bold">{percentage}%</span> of this total volume.
                   </p>
                 </div>
+
               </div>
             </div>
           </div>
