@@ -1,6 +1,6 @@
 "use client"
 
-import { ExternalLink, Database, FileText } from "lucide-react"
+import { ExternalLink, Database, FileText, Cpu, Users } from "lucide-react"
 import { useState, useEffect, useRef, useCallback } from "react"
 
 export function Footer() {
@@ -68,8 +68,8 @@ export function Footer() {
               transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            As seen, the Mission has always been a prostitution hotspot <a href="https://localnewsmatters.org/2023/08/17/sex-work-and-the-city-policing-prostitution-in-san-francisco-reflects-evolving-attitudes/" className="underline decoration-primary/50 hover:decoration-primary">[3]</a>. However, Our visualizations show a collapse in recorded data, but we must distinguish between 
-      <strong> activity </strong> and <strong> enforcement</strong>. Last year's "empty map" does not prove that prostitution has disappeared. Rather, it shows that the way we record it has fundamentally changed for the following reasons:
+            As seen, the Mission has always been a prostitution hotspot <a href="https://localnewsmatters.org/2023/08/17/sex-work-and-the-city-policing-prostitution-in-san-francisco-reflects-evolving-attitudes/" className="underline decoration-primary/50 hover:decoration-primary">[3]</a>. However, Our visualizations show a collapse in recorded data, but we must distinguish between
+            <strong> activity </strong> and <strong> enforcement</strong>. Last year's "empty map" does not prove that prostitution has disappeared. Rather, it shows that the way we record it has fundamentally changed for the following reasons:
           </p>
 
 
@@ -272,6 +272,65 @@ export function Footer() {
               </li>
             ))}
           </ul>
+        </div>
+
+        {/* Use of AI Section */}
+        <div
+          className="mb-16"
+          style={{
+            opacity: scrollProgress > 0.65 ? 1 : 0,
+            transform: scrollProgress > 0.65 ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.8s ease',
+          }}
+        >
+          <h3 className="font-sans text-foreground font-medium mb-6 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <Cpu className="w-4 h-4 text-primary" />
+            </div>
+            Use of AI
+          </h3>
+          <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
+            <p>
+              The technical implementation and presentation of this assignment involved the use of generative AI tools in the following capacities:
+            </p>
+            <ul className="list-disc pl-5 space-y-2">
+              <li><strong>Plotting and Visualization:</strong> AI was utilized to assist in refining the plotting code (Matplotlib, Seaborn, and Altair), specifically for optimizing the data-ink ratio and troubleshooting complex multi-panel figures.</li>
+              <li><strong>Text Refinement:</strong> Generative AI was used as a linguistic assistant to verify grammar, improve sentence structure, and ensure clarity throughout the report.</li>
+              <li><strong>Verification and Accountability:</strong> Every output generated or assisted by AI was thoroughly reviewed and verified by the authors. All interpretations, criminological insights, and final conclusions were developed by the authors.</li>
+            </ul>
+          </div>
+        </div>
+
+
+        {/* Contributions Section */}
+        <div
+          className="mb-16"
+          style={{
+            opacity: scrollProgress > 0.75 ? 1 : 0,
+            transform: scrollProgress > 0.75 ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.8s ease',
+          }}
+        >
+          <h3 className="font-sans text-foreground font-medium mb-6 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <Users className="w-4 h-4 text-primary" />
+            </div>
+            Contributions
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 text-sm">
+            <div className="space-y-2">
+              <p className="font-medium text-foreground">Guillermo Quiroga Ocaña (S252802)</p>
+              <p className="text-muted-foreground">
+                Visualization 1, Webpage development.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <p className="font-medium text-foreground">Juan Manuel Rodriguez (S253505)</p>
+              <p className="text-muted-foreground">
+                Visualization 2 and 3.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Footer meta with fade */}
