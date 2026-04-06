@@ -93,7 +93,7 @@ export function CalendarVisualization() {
                 transition: 'all 0.7s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
-              Some patterns only emerge when you zoom out.
+              Patterns in the urban calendar are rarely random. Zooming out to a decade of data reveals the invisible hand of policy and cycles of enforcement. This view also reveals the unexpected silence brought on by the global coronavirus pandemic.
             </p>
           </div>
 
