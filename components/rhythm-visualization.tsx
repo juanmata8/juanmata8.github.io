@@ -23,7 +23,7 @@ const PALETTE: Record<Crime, string> = {
   "WARRANTS": "#FFD166",
   "STOLEN PROPERTY": "#06D6A0",
   "BURGLARY": "#EF476F",
-  "EMBEZZLEMENT": "#C77DFF",
+  "EMBEZZLEMENT": "#118AB2",
 }
 
 const YEARS = Array.from({ length: 23 }, (_, i) => 2003 + i)  // 2003–2025
