@@ -5,7 +5,7 @@ import { MapPin } from "lucide-react"
 
 interface InteractiveChoiceProps {
   selected: string | null
-  onSelect: (choice: string) => void
+  onSelect: (choice: string | null) => void // Changed to allow null for toggling
 }
 
 const revealMessages: Record<string, { text: string; isCorrect: boolean }> = {
@@ -32,36 +32,37 @@ const choices = [
 export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const [isInView, setIsInView] = useState(false)
-  const [isLoaded, setIsLoaded] = useState(false) // Added for scroll indicator
+  const [isLoaded, setIsLoaded] = useState(false)
   const [hoveredChoice, setHoveredChoice] = useState<string | null>(null)
   const reveal = selected ? revealMessages[selected] : null
 
   useEffect(() => {
-    setIsLoaded(true) // Set loaded on mount
-
+    setIsLoaded(true)
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true)
-        }
+        if (entry.isIntersecting) setIsInView(true)
       },
       { threshold: 0.2, rootMargin: '-50px' }
     )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
+    if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
   }, [])
+
+  // Handler to allow switching or deselecting
+  const handleSelect = (id: string) => {
+    if (selected === id) {
+      onSelect(null) // Unselect if clicking the same one
+    } else {
+      onSelect(id) // Switch to new choice
+    }
+  }
 
   return (
     <section 
       id="interactive-choice" 
       ref={sectionRef}
-      className="py-24 sm:py-32 scroll-mt-8 relative min-h-[80vh] flex flex-col justify-center"
+      className="py-24 sm:py-32 scroll-mt-8 relative min-h-[80vh] flex flex-col justify-center overflow-hidden"
     >
-      {/* Subtle background gradient on section */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -72,7 +73,6 @@ export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps
       />
 
       <div className="relative max-w-5xl mx-auto px-6 w-full">
-        {/* Section label */}
         <div className="overflow-hidden mb-3">
           <p 
             className="text-primary font-sans text-xs tracking-[0.25em] uppercase"
@@ -85,7 +85,6 @@ export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps
           </p>
         </div>
 
-        {/* Main question */}
         <div className="overflow-hidden mb-6">
           <h2 
             className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-foreground text-balance leading-tight"
@@ -98,30 +97,27 @@ export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps
           </h2>
         </div>
 
-        {/* Choice buttons */}
         <div className="grid sm:grid-cols-3 gap-4 mb-8">
           {choices.map((choice, index) => (
             <button
               key={choice.id}
-              onClick={() => onSelect(choice.id)}
+              onClick={() => handleSelect(choice.id)}
               onMouseEnter={() => setHoveredChoice(choice.id)}
               onMouseLeave={() => setHoveredChoice(null)}
-              disabled={!!selected}
+              // DISABLED REMOVED HERE to allow clicking others
               className={`
                 relative px-6 py-5 rounded-xl font-sans text-base text-left
                 cursor-pointer overflow-hidden group
                 transition-all duration-500 ease-out
                 ${selected === choice.id
                   ? "bg-primary text-primary-foreground ring-2 ring-primary ring-offset-2 ring-offset-background"
-                  : selected
-                    ? "bg-card/50 text-muted-foreground border border-border/50"
-                    : "bg-card text-card-foreground border border-border hover:border-primary/60 hover:bg-card/80"
+                  : "bg-card text-card-foreground border border-border hover:border-primary/60 hover:bg-card/80"
                 }
               `}
               style={{
                 opacity: isInView ? 1 : 0,
                 transform: isInView 
-                  ? `translateY(0) scale(${hoveredChoice === choice.id && !selected ? 1.02 : 1})` 
+                  ? `translateY(0) scale(${hoveredChoice === choice.id ? 1.02 : 1})` 
                   : 'translateY(40px) scale(0.95)',
                 transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.45 + index * 0.08}s`,
               }}
@@ -140,10 +136,13 @@ export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps
           ))}
         </div>
 
-        {/* Reveal panel */}
+        {/* Reveal panel with key for smoother transition when switching */}
         <div className={`overflow-hidden transition-all duration-700 ease-out ${reveal ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'}`}>
           {reveal && (
-            <div className={`relative mt-8 p-8 rounded-2xl ${reveal.isCorrect ? "bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/30" : "bg-card border border-border"}`}>
+            <div 
+              key={selected} // Adding a key forces a slight re-animation when switching content
+              className={`relative mt-8 p-8 rounded-2xl animate-in fade-in slide-in-from-top-4 duration-500 ${reveal.isCorrect ? "bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/30" : "bg-card border border-border"}`}
+            >
               <p className="font-sans text-lg text-foreground leading-relaxed">
                 {reveal.text}
               </p>
@@ -152,7 +151,6 @@ export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps
         </div>
       </div>
 
-      {/* Added Scroll indicator */}
       <div
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
         style={{
@@ -178,7 +176,6 @@ export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps
           50% { top: 18px; opacity: 0.3; }
           100% { top: 6px; opacity: 1; }
         }
-        /* ... keeping your other existing animations ... */
       `}</style>
     </section>
   )

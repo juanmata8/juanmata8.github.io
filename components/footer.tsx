@@ -68,7 +68,8 @@ export function Footer() {
               transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            As seen, the Mission has always been a prostitution hotspot <a href="https://localnewsmatters.org/2023/08/17/sex-work-and-the-city-policing-prostitution-in-san-francisco-reflects-evolving-attitudes/" className="underline decoration-primary/50 hover:decoration-primary">[3]</a>. However, prostitution has declined for the following reasons:
+            As seen, the Mission has always been a prostitution hotspot <a href="https://localnewsmatters.org/2023/08/17/sex-work-and-the-city-policing-prostitution-in-san-francisco-reflects-evolving-attitudes/" className="underline decoration-primary/50 hover:decoration-primary">[3]</a>. However, Our visualizations show a collapse in recorded data, but we must distinguish between 
+      <strong> activity </strong> and <strong> enforcement</strong>. Last year's "empty map" does not prove that prostitution has disappeared. Rather, it shows that the way we record it has fundamentally changed for the following reasons:
           </p>
 
 
@@ -81,7 +82,7 @@ export function Footer() {
                 transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
-              <span className="text-primary font-medium">1. Legislative Erasure:</span> The blank squares aren&apos;t empty streets; they&apos;re erased laws. The 2023 repeal of California&apos;s loitering law wiped out the charge responsible for <span className="text-foreground font-medium">65% of citations</span> <a href="https://localnewsmatters.org/2023/08/17/sex-work-and-the-city-policing-prostitution-in-san-francisco-reflects-evolving-attitudes/" className="underline decoration-primary/50 hover:decoration-primary">[3]</a>.
+              <span className="text-primary font-medium">1. Legislative Change:</span> Implemented in early 2023, SB 357 (the Safer Streets for All Act) eliminated the most common basis for arrest. Previously, "loitering with intent" accounted for 65% of all prostitution-related citations. With this legal mechanism gone, the primary source of data on "activity" on the streets has disappeared from police records <a href="https://localnewsmatters.org/2023/08/17/sex-work-and-the-city-policing-prostitution-in-san-francisco-reflects-evolving-attitudes/" className="underline decoration-primary/50 hover:decoration-primary">[3]</a>.
             </p>
 
             <p
@@ -92,7 +93,7 @@ export function Footer() {
                 transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
               }}
             >
-              <span className="text-primary font-medium">2. Digital Migration:</span> The 2020 lockdowns broke the physical timeline. The nocturnal economy moved online, with platforms exploding from <span className="text-foreground font-medium">7.5 million to 80 million users</span> <a href="https://doi.org/10.3390/socsci12020062" className="underline decoration-primary/50 hover:decoration-primary">[4]</a>.
+              <span className="text-primary font-medium">2. Digital Migration:</span> The lockdowns of 2020 disrupted the physical timeline. The nocturnal economy shifted online, and platforms like OnlyFans grew from 7.5 million to 85 million users in a matter of months. For many, the "street" was replaced by the "screen," a safer and more autonomous environment entirely outside local police incident maps. <a href="https://doi.org/10.3390/socsci12020062" className="underline decoration-primary/50 hover:decoration-primary">[4]</a>.
             </p>
           </div>
 
