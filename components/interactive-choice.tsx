@@ -94,7 +94,7 @@ export function InteractiveChoice({ selected, onSelect }: InteractiveChoiceProps
               transition: 'transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
             }}
           >
-            Where would they go?
+            Which district would they go to?
           </h2>
         </div>
 

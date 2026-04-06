@@ -1,6 +1,6 @@
 "use client"
 
-import { Play, Pause } from "lucide-react"
+import { Play, Pause, AlertCircle, TrendingUp } from "lucide-react"
 import { useState, useEffect, useRef, useCallback } from "react"
 
 export function MapVisualization() {
@@ -21,17 +21,17 @@ export function MapVisualization() {
   }, [year])
 
   // ── Listen for percentage updates sent back from the iframe ──────────
-useEffect(() => {
-  const handleMessage = (event: MessageEvent) => {
-    // Check for the new type 'UPDATE_DATA'
-    if (event.data.type === "UPDATE_DATA") {
-      setPercentage(Math.round(event.data.percentage))
-      setTotalIncidents(event.data.total) // Set the total
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      // Check for the new type 'UPDATE_DATA'
+      if (event.data.type === "UPDATE_DATA") {
+        setPercentage(Math.round(event.data.percentage))
+        setTotalIncidents(event.data.total) // Set the total
+      }
     }
-  }
-  window.addEventListener("message", handleMessage)
-  return () => window.removeEventListener("message", handleMessage)
-}, [])
+    window.addEventListener("message", handleMessage)
+    return () => window.removeEventListener("message", handleMessage)
+  }, [])
 
   // ── Scroll progress ──────────────────────────────────────────────────
   const handleScroll = useCallback(() => {
@@ -76,11 +76,60 @@ useEffect(() => {
               Visualization I
             </p>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
-              The Spatial Evolution
+              A Geography of <span className="text-[#d97757]">Persistence</span>
             </h2>
             <p className="font-sans text-muted-foreground leading-relaxed text-lg mt-4">
-              See how the locations of incidents in San Francisco have changed over the past two decades.
+              While San Francisco has changed drastically since 2003, the spatial patterns of these incidents have remained
+              remarkably fixed. Use the timeline to see how hotspots refuse to fade.
             </p>
+          </div>
+
+          {/* ── 2. Static Insight Callout (Now between Header and Map) ── */}
+          <div
+            className="mb-10 grid grid-cols-1 md:grid-cols-3 gap-4"
+            style={{
+              opacity: scrollProgress > 0.1 ? 1 : 0,
+              transform: scrollProgress > 0.1 ? "translateY(0)" : "translateY(20px)",
+              transition: "all 0.8s ease-out 0.1s",
+            }}
+          >
+            {/* Total Volume */}
+            <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2 font-bold">Total Citywide</p>
+              <div className="text-3xl font-serif font-bold text-foreground tabular-nums">
+                {totalIncidents.toLocaleString()} <span className="text-sm font-sans font-normal text-muted-foreground">Reports</span>
+              </div>
+            </div>
+
+            {/* Mission Share */}
+            <div className="md:col-span-2 p-6 rounded-2xl bg-[#d97757]/5 border border-[#d97757]/20 relative overflow-hidden">
+              <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-6">
+                <div className="flex-shrink-0">
+                  <div className="text-4xl font-serif font-black text-[#d97757] leading-none mb-1 tabular-nums">
+                    {percentage}%
+                  </div>
+                  <p className="text-[10px] uppercase tracking-widest text-[#d97757]/70 font-bold">Mission Share</p>
+                </div>
+                
+                <div className="flex-1">
+                  <h4 className="font-bold text-foreground flex items-center gap-2 mb-1 text-sm">
+                    <AlertCircle size={16} className="text-[#d97757]" />
+                    Mission District Concentration
+                  </h4>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    In {year}, {percentage}% of all citywide reported incidents occurred within the Mission district boundaries.
+                  </p>
+                </div>
+              </div>
+              
+              {/* Static visual background bar */}
+              <div className="absolute bottom-0 left-0 h-1 bg-[#d97757]/10 w-full">
+                <div 
+                  className="h-full bg-[#d97757] transition-all duration-700 ease-out" 
+                  style={{ width: `${percentage}%` }}
+                />
+              </div>
+            </div>
           </div>
 
           {/* ── Map card with overlay controls ── */}
@@ -208,39 +257,6 @@ useEffect(() => {
             <span className="text-foreground font-medium">Figure 1:</span> Spatiotemporal Evolution of Prostitution in San Francisco (2003–2025) This heat map shows incident density across San Francisco Police Department (SFPD) districts. Hover over any area to see the district name and the number of incidents per year. The data highlights persistent hotspots in the Tenderloin and Mission districts. Despite citywide trends over the last two decades, these incidents have remained localized to specific urban corridors.
           </div>
 
-          {/* ── Insight callout ── */}
-          <div
-            className="mt-10"
-            style={{ opacity: scrollProgress > 0.15 ? 1 : 0, transition: "opacity 0.6s ease 0.5s" }}
-          >
-            <div className="p-8 rounded-2xl bg-[#d97757]/5 border border-[#d97757]/15">
-              <div className="flex flex-col sm:flex-row gap-8 items-center">
-                
-                {/* Big Stat */}
-                <div className="text-center sm:text-left">
-                  <div className="font-serif font-bold tabular-nums text-[#d97757]" style={{ fontSize: "3rem", lineHeight: 1 }}>
-                    {percentage}%
-                  </div>
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">District Share</p>
-                </div>
-
-                {/* Vertical Divider */}
-                <div className="hidden sm:block w-px h-12 bg-[#d97757]/20" />
-
-                {/* Description */}
-                <div>
-                  <p className="font-sans text-lg text-foreground font-medium mb-1">
-                    Mission District Concentration
-                  </p>
-                  <p className="font-sans text-muted-foreground leading-relaxed">
-                    In <span className="text-foreground font-semibold">{year}</span>, there were <span className="text-foreground font-semibold">{totalIncidents.toLocaleString()}</span> citywide incidents. 
-                    The Mission district accounted for <span className="text-[#d97757] font-bold">{percentage}%</span> of this total volume.
-                  </p>
-                </div>
-
-              </div>
-            </div>
-          </div>
 
         </div>
       </div>
