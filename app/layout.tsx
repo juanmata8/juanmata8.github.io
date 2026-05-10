@@ -1,23 +1,37 @@
-import type { Metadata, Viewport } from 'next'
-import { Inter, Playfair_Display } from 'next/font/google'
+import type { Metadata } from 'next'
+import { Lora, Inter, JetBrains_Mono, Caveat } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { GuessProvider } from '@/context/guess-context'
 import './globals.css'
+
+const lora = Lora({ 
+  subsets: ["latin"],
+  variable: '--font-lora',
+  display: 'swap',
+})
 
 const inter = Inter({ 
   subsets: ["latin"],
   variable: '--font-inter',
-  display: 'swap'
-});
+  display: 'swap',
+})
 
-const playfair = Playfair_Display({ 
+const jetbrainsMono = JetBrains_Mono({ 
   subsets: ["latin"],
-  variable: '--font-playfair',
-  display: 'swap'
-});
+  variable: '--font-jetbrains',
+  display: 'swap',
+})
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: '--font-caveat',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+})
 
 export const metadata: Metadata = {
-  title: 'The Night Shift: Mapping the Hidden Rhythm of San Francisco',
-  description: 'A data-driven exploration of how nighttime activity patterns have evolved across San Francisco from 2003 to 2025.',
+  title: 'The Map Lies | NYC Restaurant Inspection Data',
+  description: 'What a New York restaurant score actually measures. An investigative data story about NYC restaurant inspections.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -38,22 +52,18 @@ export const metadata: Metadata = {
   },
 }
 
-export const viewport: Viewport = {
-  themeColor: '#1a1a2e',
-  width: 'device-width',
-  initialScale: 1,
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <body className="font-sans antialiased bg-background text-foreground">
-        {children}
-        <Analytics />
+    <html lang="en" className={`${lora.variable} ${inter.variable} ${jetbrainsMono.variable} ${caveat.variable} bg-background`}>
+      <body className="font-serif antialiased">
+        <GuessProvider>
+          {children}
+        </GuessProvider>
+        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )

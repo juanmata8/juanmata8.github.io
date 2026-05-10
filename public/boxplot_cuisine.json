@@ -1,0 +1,78 @@
+{
+  "x_max": 50,
+  "scale_label": "Inspection Score (lower = cleaner)",
+  "cuisines": [
+    {
+      "name": "Indian",
+      "min": 0.0,
+      "q1": 12.0,
+      "median": 13.0,
+      "q3": 27.0,
+      "max": 49.0,
+      "color": "var(--chart-1)"
+    },
+    {
+      "name": "Chinese",
+      "min": 0.0,
+      "q1": 11.0,
+      "median": 13.0,
+      "q3": 24.0,
+      "max": 43.0,
+      "color": "var(--chart-2)"
+    },
+    {
+      "name": "Middle Eastern",
+      "min": 3.0,
+      "q1": 10.0,
+      "median": 12.0,
+      "q3": 15.0,
+      "max": 22.0,
+      "color": "var(--chart-6)"
+    },
+    {
+      "name": "Mexican",
+      "min": 0.0,
+      "q1": 10.0,
+      "median": 12.0,
+      "q3": 19.0,
+      "max": 32.0,
+      "color": "var(--chart-5)"
+    },
+    {
+      "name": "Mediterranean",
+      "min": 6.0,
+      "q1": 10.0,
+      "median": 12.0,
+      "q3": 13.0,
+      "max": 17.0,
+      "color": "var(--chart-3)"
+    },
+    {
+      "name": "Italian",
+      "min": 6.0,
+      "q1": 10.0,
+      "median": 12.0,
+      "q3": 13.0,
+      "max": 17.0,
+      "color": "var(--chart-2)"
+    },
+    {
+      "name": "Jewish/Kosher",
+      "min": 0.0,
+      "q1": 10.0,
+      "median": 12.0,
+      "q3": 20.0,
+      "max": 35.0,
+      "color": "var(--chart-4)"
+    },
+    {
+      "name": "American",
+      "min": 3.0,
+      "q1": 9.0,
+      "median": 12.0,
+      "q3": 13.0,
+      "max": 19.0,
+      "color": "var(--chart-1)"
+    }
+  ]
+}
