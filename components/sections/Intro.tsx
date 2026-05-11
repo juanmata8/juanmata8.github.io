@@ -118,9 +118,10 @@ export function Intro() {
             <span className="font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded text-base">C</span>
             <span className="text-sm text-muted-foreground/70">(score 28+)</span>
           </span>{' '}
-          grades were included. Ungraded visits, pre-permit checks, and inspections during periods
-          when grades were not assigned — such as during the pandemic — were excluded.
-          The dataset only reflects active restaurants.
+          grades were included. Visits that were not graded, pre-permit checks, 
+          and inspections that occurred during periods when grades were not assigned 
+          (such as during the pandemic) were excluded. 
+          The dataset only includes active restaurants.
         </p>
 
         <button
