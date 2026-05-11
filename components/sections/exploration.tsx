@@ -12,8 +12,6 @@ const cuisines = [
 
 const grades = ['All', 'A', 'B', 'C']
 
-// Path to the standalone HTML produced by build_nyc_map.py
-// Drop nyc_borough_map.html into your /public folder.
 const MAP_SRC = '/nyc_borough_map.html'
 
 type Stats = {
@@ -37,7 +35,6 @@ export function Exploration() {
     )
   }
 
-  // Grades: multi-select with mutually-exclusive 'All'
   const toggleGrade = (grade: string) => {
     setSelectedGrades(prev => {
       if (grade === 'All') return ['All']
@@ -49,7 +46,6 @@ export function Exploration() {
     })
   }
 
-  // Listen for stats from iframe
   useEffect(() => {
     const handler = (e: MessageEvent) => {
       if (!e.data) return
@@ -67,7 +63,6 @@ export function Exploration() {
     return () => window.removeEventListener('message', handler)
   }, [])
 
-  // Push filters to iframe whenever any change (and once map is ready)
   useEffect(() => {
     if (!mapReady || !iframeRef.current?.contentWindow) return
     const gradesPayload = selectedGrades.includes('All') ? [] : selectedGrades
@@ -106,8 +101,6 @@ export function Exploration() {
         >
           Explore the data
         </h2>
-
-
       </motion.div>
 
       <p className="font-serif text-base text-muted-foreground leading-relaxed text-center max-w-2xl mx-auto -mt-8 mb-12">
@@ -123,7 +116,7 @@ export function Exploration() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="grid md:grid-cols-3 gap-8 mb-12"
+          className="grid md:grid-cols-3 gap-8 mb-8"
         >
           {/* Borough selector */}
           <div>
@@ -168,7 +161,7 @@ export function Exploration() {
             </div>
           </div>
 
-          {/* Grade selector — replaces score range */}
+          {/* Grade selector */}
           <div>
             <label className="font-sans text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3 block">
               Inspection Grade
@@ -196,6 +189,35 @@ export function Exploration() {
           </div>
         </motion.div>
 
+        {/* Avg Score banner — sits just above the map */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          className="flex items-center justify-between gap-4 mb-3 px-4 py-2.5 bg-card border border-border"
+        >
+          <p className="font-serif text-sm text-muted-foreground leading-snug">
+            The average score barely changes depending on the borough. Geography does not affect grades.
+          </p>
+          <div className="flex items-center gap-6 shrink-0">
+            {[
+              { label: 'Restaurants', value: fmt(stats.total) },
+              { label: 'Inspections', value: fmt(stats.inspections) },
+              { label: 'Avg. Score', value: stats.avgScore == null ? '—' : stats.avgScore.toFixed(1) },
+            ].map(({ label, value }) => (
+              <div key={label} className="flex items-center gap-2">
+                <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-muted-foreground whitespace-nowrap">
+                  {label}
+                </span>
+                <span className="font-mono text-lg text-foreground">
+                  {value}
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
         {/* Map iframe */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -220,47 +242,8 @@ export function Exploration() {
           )}
         </motion.div>
 
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="grid grid-cols-3 gap-4 sm:gap-6 mt-8"
-        >
-          {[
-            { label: 'Restaurants', value: fmt(stats.total) },
-            { label: 'Avg. Score', value: stats.avgScore == null ? '—' : stats.avgScore.toFixed(1) },
-            { label: 'Inspections', value: fmt(stats.inspections) },
-          ].map(({ label, value }) => (
-            <motion.div
-              key={label}
-              whileHover={{ y: -2 }}
-              transition={{ duration: 0.3 }}
-              className="text-center p-4 sm:p-6 bg-card border border-border"
-            >
-              <p className="font-mono text-xl sm:text-2xl text-foreground">{value}</p>
-              <p className="font-sans text-[10px] sm:text-xs uppercase tracking-[0.15em] text-muted-foreground mt-2">
-                {label}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
-        <motion.div
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-  className="mt-8 bg-card border border-border p-6 sm:p-8"
->
-  <p className="font-serif text-base text-muted-foreground leading-relaxed mb-3">
-    No matter which borough you choose, the numbers barely change, averaging 11.8. 
-    It turns out that geography does not affect grades.
-  </p>
- 
-</motion.div>
+
       </div>
-      
     </section>
   )
 }

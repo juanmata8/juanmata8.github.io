@@ -62,6 +62,30 @@ const factors = [
   },
 ]
 
+// Real normalized coefficients from the full model, normalized to max abs = 1.0
+const ALL_FEATURES_COEFS = [
+  { feature: 'Previously B',     group: 'Past grade', coef: -1.000 },
+  { feature: 'Previously C',     group: 'Past grade', coef: -0.937 },
+  { feature: 'First inspection', group: 'Past grade', coef: -0.040 },
+  { feature: 'Indian',           group: 'Cuisine',    coef: -0.066 },
+  { feature: 'Middle Eastern',   group: 'Cuisine',    coef: -0.057 },
+  { feature: 'Chinese',          group: 'Cuisine',    coef: -0.047 },
+  { feature: 'Italian',          group: 'Cuisine',    coef: -0.013 },
+  { feature: 'Jewish / Kosher',  group: 'Cuisine',    coef: -0.002 },
+  { feature: 'Mediterranean',    group: 'Cuisine',    coef:  0.011 },
+  { feature: 'Mexican',          group: 'Cuisine',    coef:  0.021 },
+  { feature: 'Queens',           group: 'Borough',    coef: -0.014 },
+  { feature: 'Staten Island',    group: 'Borough',    coef:  0.017 },
+  { feature: 'Manhattan',        group: 'Borough',    coef:  0.023 },
+  { feature: 'Brooklyn',         group: 'Borough',    coef:  0.050 },
+]
+
+const GROUP_COLORS: Record<string, string> = {
+  'Past grade': '#A32D2D',
+  'Cuisine':    '#BA7517',
+  'Borough':    '#185FA5',
+}
+
 function sigmoid(x: number) {
   return 1 / (1 + Math.exp(-x))
 }
@@ -79,11 +103,7 @@ function calcProbs(cuisine: string, borough: string, history: string) {
 }
 
 function ProbabilityBar({
-  label,
-  probability,
-  color,
-  isInView,
-  index,
+  label, probability, color, isInView, index,
 }: {
   label: string
   probability: number
@@ -116,107 +136,6 @@ function ProbabilityBar({
       >
         {Math.round(probability * 100)}%
       </motion.span>
-    </motion.div>
-  )
-}
-
-function CoefficientBar({
-  name,
-  value,
-  maxAbs,
-  isActive,
-}: {
-  name: string
-  value: number
-  maxAbs: number
-  isActive: boolean
-}) {
-  const TRACK_W = 100
-  const frac = Math.abs(value) / maxAbs
-  const barW = Math.round(frac * TRACK_W)
-  const isPos = value >= 0
-
-  return (
-    <div className="flex items-center gap-2 mb-1.5">
-      <span
-        className="text-xs text-right flex-shrink-0 w-28"
-        style={{
-          color: isActive
-            ? 'var(--foreground)'
-            : 'var(--muted-foreground)',
-          fontWeight: isActive ? 500 : 400,
-        }}
-      >
-        {name}
-      </span>
-
-      <div className="relative flex items-center" style={{ width: TRACK_W }}>
-        <div
-          className="h-2.5 rounded-sm transition-all duration-500"
-          style={{
-            width: barW,
-            marginLeft: isPos ? 0 : TRACK_W - barW,
-            backgroundColor: isActive
-              ? isPos ? '#3b6d11' : '#A32D2D'
-              : isPos ? '#97C459' : '#F09595',
-          }}
-        />
-      </div>
-
-      <span
-        className="text-xs tabular-nums flex-shrink-0"
-        style={{
-          color: isActive ? 'var(--foreground)' : 'var(--muted-foreground)',
-          fontWeight: isActive ? 500 : 400,
-        }}
-      >
-        {value > 0 ? '+' : ''}{value.toFixed(2)}
-      </span>
-    </div>
-  )
-}
-
-function CoefficientGroup({
-  title,
-  subtitle,
-  data,
-  activeKey,
-  scaleNote,
-  isInView,
-  delay,
-}: {
-  title: string
-  subtitle: string
-  data: Record<string, number>
-  activeKey: string
-  scaleNote: string
-  isInView: boolean
-  delay: number
-}) {
-  const MAX_ABS = 9
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.6, delay }}
-    >
-      <p className="font-sans text-xs uppercase tracking-[0.15em] text-muted-foreground mb-0.5">
-        {title}
-      </p>
-      <p className="text-xs text-muted-foreground/60 mb-3">{subtitle}</p>
-
-      {Object.entries(data).map(([name, val]) => (
-        <CoefficientBar
-          key={name}
-          name={name}
-          value={val}
-          maxAbs={MAX_ABS}
-          isActive={name === activeKey}
-        />
-      ))}
-
-      <p className="text-xs text-muted-foreground/50 mt-2 italic">{scaleNote}</p>
     </motion.div>
   )
 }
@@ -263,12 +182,13 @@ export function LogisticRegression() {
             We trained a model on 9,292 NYC restaurants to ask a simple question:
             what actually predicts how a restaurant will score next time?
             <br /><br />
-            The answer wasn't cuisine. Nor was it the borough. 
-            It was almost exclusively the previous score. 
-            A restaurant that has scored well in the past will likely score well again, 
+            The answer wasn't cuisine. Nor was it the borough.{' '}
+            <strong className="text-foreground">It was almost exclusively the previous score.</strong>{' '}
+            A restaurant that has scored well in the past will likely score well again,
             regardless of what it serves or where it is located.
             <br /><br />
-            In other words, the kitchen's track record is the only thing that matters.
+            In other words,{' '}
+            <strong className="text-foreground">the kitchen's track record is the only thing that matters.</strong>{' '}
             Not the neighborhood. Not the flag on the menu.
           </p>
         </motion.div>
@@ -283,7 +203,6 @@ export function LogisticRegression() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="space-y-8"
           >
-            {/* Cuisine */}
             <div>
               <label className="font-sans text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3 block">
                 Cuisine Type
@@ -295,10 +214,11 @@ export function LogisticRegression() {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => select('cuisine', opt)}
-                    className={`px-3 py-2 text-sm font-serif border transition-all duration-200 ${selections.cuisine === opt
+                    className={`px-3 py-2 text-sm font-serif border transition-all duration-200 ${
+                      selections.cuisine === opt
                         ? 'bg-primary text-primary-foreground border-primary'
                         : 'bg-background text-muted-foreground border-border hover:border-primary/50 hover:text-foreground'
-                      }`}
+                    }`}
                   >
                     {opt}
                   </motion.button>
@@ -306,7 +226,6 @@ export function LogisticRegression() {
               </div>
             </div>
 
-            {/* Borough */}
             <div>
               <label className="font-sans text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3 block">
                 Borough
@@ -318,10 +237,11 @@ export function LogisticRegression() {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => select('borough', opt)}
-                    className={`px-3 py-2 text-sm font-serif border transition-all duration-200 ${selections.borough === opt
+                    className={`px-3 py-2 text-sm font-serif border transition-all duration-200 ${
+                      selections.borough === opt
                         ? 'bg-primary text-primary-foreground border-primary'
                         : 'bg-background text-muted-foreground border-border hover:border-primary/50 hover:text-foreground'
-                      }`}
+                    }`}
                   >
                     {opt}
                   </motion.button>
@@ -329,7 +249,6 @@ export function LogisticRegression() {
               </div>
             </div>
 
-            {/* History */}
             <div>
               <label className="font-sans text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3 block">
                 Past Performance
@@ -341,14 +260,15 @@ export function LogisticRegression() {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={() => select('history', opt.val)}
-                    className={`px-3 py-2 text-sm font-serif border transition-all duration-200 ${selections.history === opt.val
+                    className={`px-3 py-2 text-sm font-serif border transition-all duration-200 ${
+                      selections.history === opt.val
                         ? opt.val === 'A'
                           ? 'bg-green-800 text-white border-green-800'
                           : 'bg-primary text-primary-foreground border-primary'
                         : opt.val === 'A'
                           ? 'bg-background text-green-700 border-green-300 hover:border-green-600'
                           : 'bg-background text-muted-foreground border-border hover:border-primary/50 hover:text-foreground'
-                      }`}
+                    }`}
                   >
                     {opt.label}
                   </motion.button>
@@ -367,13 +287,11 @@ export function LogisticRegression() {
             <h3 className="font-sans text-xs uppercase tracking-[0.2em] text-muted-foreground mb-6">
               Predicted chance of each grade
             </h3>
-
             <div className="space-y-4">
               <ProbabilityBar label="Grade A" probability={pA} color="var(--chart-3)" isInView={isInView} index={0} />
               <ProbabilityBar label="Grade B" probability={pB} color="var(--chart-1)" isInView={isInView} index={1} />
               <ProbabilityBar label="Grade C" probability={pC} color="var(--chart-2)" isInView={isInView} index={2} />
             </div>
-
             <div className="mt-8 pt-6 border-t border-border/50">
               <AnimatePresence mode="wait">
                 <motion.p
@@ -391,7 +309,85 @@ export function LogisticRegression() {
           </motion.div>
         </div>
 
+        {/* Variable weight table — real normalized coefficients from full model */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: 0.7, delay: 0.45 }}
+          className="border-t border-border pt-10"
+        >
+          <p className="font-sans text-xs uppercase tracking-[0.25em] text-muted-foreground mb-1">
+            Variable weight in the full model
+          </p>
+          <p className="font-serif text-sm text-muted-foreground/70 mb-6 max-w-xl">
+            Each number shows how strongly a factor pushes toward or away from an A grade. 
+            The biggest drag on the model is a previous B grade, which is −1.0. 
+            Everything else is a fraction of that.
+          </p>
 
+          <div className="border border-border">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="font-sans text-[10px] uppercase tracking-[0.15em] text-muted-foreground text-left px-4 py-2">Feature</th>
+                  <th className="font-sans text-[10px] uppercase tracking-[0.15em] text-muted-foreground text-left px-4 py-2">Group</th>
+                  <th className="font-sans text-[10px] uppercase tracking-[0.15em] text-muted-foreground text-right px-4 py-2 w-20">Coef.</th>
+                  <th className="font-sans text-[10px] uppercase tracking-[0.15em] text-muted-foreground px-4 py-2 w-36 hidden sm:table-cell">Weight</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ALL_FEATURES_COEFS.map(({ feature, group, coef }) => {
+                  const isPastGrade = group === 'Past grade'
+                  const isNeg = coef < 0
+                  const barWidth = `${Math.abs(coef) * 100}%`
+                  const barColor = GROUP_COLORS[group]
+                  return (
+                    <tr
+                      key={feature}
+                      className={`border-b border-border/50 ${isPastGrade ? 'bg-card' : ''}`}
+                    >
+                      <td className={`px-4 py-2.5 font-serif ${isPastGrade ? 'font-semibold text-foreground' : 'text-muted-foreground'}`}>
+                        {feature}
+                        {feature === 'Previously B' && (
+                          <span className="ml-2 font-sans text-[10px] px-1.5 py-0.5 bg-destructive/10 text-destructive rounded-sm uppercase tracking-wide">dominant</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2.5">
+                        <span
+                          className="font-sans text-[10px] px-1.5 py-0.5 rounded-sm"
+                          style={{ backgroundColor: `${barColor}18`, color: barColor }}
+                        >
+                          {group}
+                        </span>
+                      </td>
+                      <td className={`font-mono text-right px-4 py-2.5 text-xs ${isPastGrade ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+                        {coef > 0 ? '+' : ''}{coef.toFixed(3)}
+                      </td>
+                      <td className="px-4 py-2.5 hidden sm:table-cell">
+                        <div className="h-2 bg-secondary rounded-sm overflow-hidden relative">
+                          <div
+                            className="h-full rounded-sm absolute"
+                            style={{
+                              width: barWidth,
+                              backgroundColor: barColor,
+                              opacity: isPastGrade ? 1 : 0.55,
+                              ...(isNeg ? { right: 0 } : { left: 0 }),
+                            }}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+            <div className="px-4 py-3 border-t border-border/50">
+              <p className="font-serif text-xs text-muted-foreground/50 italic">
+                The reference categories are American cuisine and the Bronx. Previously, the reference category was A, and all other coefficients were measured relative to it.
+              </p>
+            </div>
+          </div>
+        </motion.div>
 
       </div>
     </section>
