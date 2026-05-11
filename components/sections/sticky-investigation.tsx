@@ -130,24 +130,37 @@ const CATEGORY_VIOLATIONS: Record<string, { code: string; label: string }[]> = {
   ],
 }
 
-// ─── 3a. VIOLATIONS ACCORDION — lives in the sticky left panel ──────────────
+// ─── 3a. VIOLATIONS ACCORDION ───────────────────────────────────────────────
 //
-// Separate component so it gets its own `open` state that resets to false
-// whenever the active step changes (because AnimatePresence unmounts it).
+// Auto-opens when the step becomes active (driven by `autoOpen` prop), but
+// the user can still toggle it closed/open manually after that.
 
 function ViolationsAccordion({
   violations,
+  autoOpen,
 }: {
   violations: { code: string; label: string }[]
+  autoOpen: boolean
 }) {
   const [open, setOpen] = useState(false)
+
+  // Sync `open` with `autoOpen` whenever the active step changes.
+  // We give the step transition a head start so the accordion expansion
+  // feels like a follow-through, not a competing motion.
+  useEffect(() => {
+    if (autoOpen) {
+      const t = setTimeout(() => setOpen(true), 350)
+      return () => clearTimeout(t)
+    } else {
+      setOpen(false)
+    }
+  }, [autoOpen])
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 8 }}
-      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="mt-4 border-l-2 border-primary pl-4 py-3 bg-background/60 rounded-r-md"
     >
       <button
@@ -157,32 +170,42 @@ function ViolationsAccordion({
       >
         <span className="font-medium">What gets penalized in this category</span>
         <ChevronDown
-          className={`w-3 h-3 ml-auto shrink-0 transition-transform duration-200 ${
+          className={`w-3 h-3 ml-auto shrink-0 transition-transform duration-300 ${
             open ? 'rotate-180' : ''
           }`}
         />
       </button>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {open && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              height: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+              opacity: { duration: 0.3, ease: 'easeOut' },
+            }}
             className="overflow-hidden"
           >
             <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5">
-              {violations.map((v) => (
-                <div
+              {violations.map((v, i) => (
+                <motion.div
                   key={v.code}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: 0.1 + i * 0.015,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                   className="flex items-start gap-2 text-xs text-muted-foreground"
                 >
                   <code className="font-mono text-[11px] text-primary shrink-0 pt-px">
                     {v.code}
                   </code>
                   <span>{v.label}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
@@ -192,7 +215,7 @@ function ViolationsAccordion({
   )
 }
 
-// ─── 3b. NARRATIVE STEP — scrolling right panel, no accordion here anymore ──
+// ─── 3b. NARRATIVE STEP ─────────────────────────────────────────────────────
 
 function NarrativeStep({
   step,
@@ -208,7 +231,7 @@ function NarrativeStep({
           opacity: isActive ? 1 : 0.25,
           x: isActive ? 0 : 16,
         }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="max-w-sm"
       >
         <span className="font-mono text-xs text-primary mb-3 block">
@@ -228,7 +251,7 @@ function NarrativeStep({
   )
 }
 
-// ─── 4. MAIN COMPONENT (mostly unchanged, narrative now uses NarrativeStep) ──
+// ─── 4. MAIN COMPONENT ──────────────────────────────────────────────────────
 export function StickyInvestigation() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const narrativeRef = useRef<HTMLDivElement>(null)
@@ -266,9 +289,9 @@ export function StickyInvestigation() {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="max-w-xl mx-auto px-6 py-16 text-center"
       >
-        <span className="font-sans text-xs uppercase tracking-[0.4em] text-primary mb-4 block">
-          Light Beginnings
-        </span>
+        <span className="font-sans font-bold text-s uppercase tracking-[0.4em] text-primary mb-4 block">
+  Light Beginnings
+</span>
         <h2
           className="text-4xl sm:text-5xl font-medium text-foreground"
           style={{ fontFamily: 'var(--font-caveat)' }}
@@ -286,47 +309,58 @@ export function StickyInvestigation() {
         {/* Sticky iframe panel */}
         <div className="lg:w-[60%] lg:sticky lg:top-0 lg:h-screen flex flex-col justify-center bg-secondary/10 p-4 lg:p-8 relative">
 
-          {/* iframe — animates in/out on step change */}
-          <AnimatePresence mode="wait">
-            {narrativeSteps.map((step, index) =>
-              activeStep === index ? (
-                <motion.div
-                  key={step.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="w-full"
-                >
-                  <iframe
-                    src={step.src}
-                    className="w-full"
-                    style={{ height: '340px', border: 'none' }}
-                    title={step.title}
-                  />
-                </motion.div>
-              ) : null
-            )}
-          </AnimatePresence>
+          {/* iframe — cross-fades between steps (no `mode="wait"`) */}
+          <div className="relative w-full" style={{ height: '340px' }}>
+            <AnimatePresence>
+              {narrativeSteps.map((step, index) =>
+                activeStep === index ? (
+                  <motion.div
+                    key={step.id}
+                    initial={{ opacity: 0, y: 8, scale: 0.99 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.99 }}
+                    transition={{
+                      duration: 0.8,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="absolute inset-0 w-full"
+                  >
+                    <iframe
+                      src={step.src}
+                      className="w-full h-full"
+                      style={{ border: 'none' }}
+                      title={step.title}
+                    />
+                  </motion.div>
+                ) : null
+              )}
+            </AnimatePresence>
+          </div>
 
-          {/* Violations accordion — sits below the chart, swaps with the step */}
-          <AnimatePresence mode="wait">
-            {narrativeSteps.map((step, index) => {
-              if (activeStep !== index) return null
-              const violations = CATEGORY_VIOLATIONS[step.id] ?? []
-              if (!violations.length) return null
-              return (
-                <ViolationsAccordion key={step.id} violations={violations} />
-              )
-            })}
-          </AnimatePresence>
+          {/* Violations accordion — auto-opens when the step becomes active */}
+          <div className="relative">
+            <AnimatePresence mode="wait">
+              {narrativeSteps.map((step, index) => {
+                if (activeStep !== index) return null
+                const violations = CATEGORY_VIOLATIONS[step.id] ?? []
+                if (!violations.length) return null
+                return (
+                  <ViolationsAccordion
+                    key={step.id}
+                    violations={violations}
+                    autoOpen={true}
+                  />
+                )
+              })}
+            </AnimatePresence>
+          </div>
 
           {/* Step indicator dots */}
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
             {narrativeSteps.map((_, i) => (
               <div
                 key={i}
-                className="rounded-full transition-all duration-300"
+                className="rounded-full transition-all duration-500 ease-out"
                 style={{
                   width: activeStep === i ? 20 : 6,
                   height: 6,
@@ -338,7 +372,7 @@ export function StickyInvestigation() {
           </div>
         </div>
 
-        {/* Scrolling narrative — now uses NarrativeStep sub-component */}
+        {/* Scrolling narrative */}
         <div ref={narrativeRef} className="lg:w-[40%] py-12 lg:py-0">
           {narrativeSteps.map((step, index) => (
             <NarrativeStep

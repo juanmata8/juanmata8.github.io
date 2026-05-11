@@ -250,7 +250,7 @@ export function LogisticRegression() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="mb-16 max-w-2xl"
         >
-          <span className="font-sans text-xs uppercase tracking-[0.4em] text-primary mb-4 block">
+          <span className="font-sans font-bold text-s uppercase tracking-[0.4em] text-primary mb-4 block">
             Signature Plate
           </span>
           <h2

@@ -103,7 +103,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 2, ease: "easeOut" }}
           className="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         >
-          <span className="text-[10px] tracking-[0.4em] uppercase text-menu-gold/60">
+          <span className="text-[20px] tracking-[0.4em] uppercase text-menu-gold/60">
             Open the menu
           </span>
           <motion.div

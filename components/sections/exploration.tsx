@@ -94,7 +94,7 @@ export function Exploration() {
       >
         <div className="flex items-center gap-6 mb-8">
           <span className="flex-1 h-px bg-border" />
-          <span className="font-sans text-xs uppercase tracking-[0.4em] text-primary">
+          <span className="font-sans font-bold text-s uppercase tracking-[0.4em] text-primary mb-4 block">
             Now You Try
           </span>
           <span className="flex-1 h-px bg-border" />
