@@ -106,7 +106,15 @@ export function Exploration() {
         >
           Explore the data
         </h2>
+
+
       </motion.div>
+
+      <p className="font-serif text-base text-muted-foreground leading-relaxed text-center max-w-2xl mx-auto -mt-8 mb-12">
+        Use the borough, cuisine, and grade filters to sort the data on the map.
+        Try selecting a few cuisines and comparing them.
+        Selecting no cuisine is equivalent to viewing them all.
+      </p>
 
       {/* Controls */}
       <div className="max-w-5xl mx-auto px-6">
@@ -149,11 +157,10 @@ export function Exploration() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => toggleCuisine(cuisine)}
-                  className={`px-3 py-1.5 text-xs font-sans transition-all duration-300 ${
-                    selectedCuisines.includes(cuisine)
+                  className={`px-3 py-1.5 text-xs font-sans transition-all duration-300 ${selectedCuisines.includes(cuisine)
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                  }`}
+                    }`}
                 >
                   {cuisine}
                 </motion.button>
@@ -177,11 +184,10 @@ export function Exploration() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => toggleGrade(grade)}
-                  className={`px-3 py-1.5 text-xs font-sans transition-all duration-300 min-w-[44px] ${
-                    selectedGrades.includes(grade)
+                  className={`px-3 py-1.5 text-xs font-sans transition-all duration-300 min-w-[44px] ${selectedGrades.includes(grade)
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                  }`}
+                    }`}
                 >
                   {grade}
                 </motion.button>
@@ -224,7 +230,7 @@ export function Exploration() {
         >
           {[
             { label: 'Restaurants', value: fmt(stats.total) },
-            { label: 'Avg. Score',  value: stats.avgScore == null ? '—' : stats.avgScore.toFixed(1) },
+            { label: 'Avg. Score', value: stats.avgScore == null ? '—' : stats.avgScore.toFixed(1) },
             { label: 'Inspections', value: fmt(stats.inspections) },
           ].map(({ label, value }) => (
             <motion.div
@@ -240,7 +246,21 @@ export function Exploration() {
             </motion.div>
           ))}
         </motion.div>
+        <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+  className="mt-8 bg-card border border-border p-6 sm:p-8"
+>
+  <p className="font-serif text-base text-muted-foreground leading-relaxed mb-3">
+    No matter which borough you choose, the numbers barely change, averaging 11.8. 
+    It turns out that geography does not affect grades.
+  </p>
+ 
+</motion.div>
       </div>
+      
     </section>
   )
 }

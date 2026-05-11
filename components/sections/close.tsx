@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 export function Close() {
   return (
     <section className="py-32 border-t border-border relative overflow-hidden">
-      {/* Subtle decorative background */}
       <div className="absolute inset-0 opacity-[0.02]"
         style={{
           backgroundImage: 'radial-gradient(var(--primary) 1px, transparent 1px)',
@@ -14,7 +13,6 @@ export function Close() {
 
       <div className="max-w-xl mx-auto px-6 text-center relative z-10">
 
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -33,7 +31,7 @@ export function Close() {
           </h2>
         </motion.div>
 
-        {/* First paragraph */}
+        {/* P1 */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -41,13 +39,13 @@ export function Close() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="font-serif text-lg sm:text-xl leading-[1.9] text-muted-foreground mb-12">
-            The letter grades on restaurant windows tell a story — but not the one you think.
-            They don&apos;t reveal which neighborhoods are &quot;dirty&quot; or which cuisines are &quot;risky.&quot;
-            They reveal which restaurants have been looked at, how often, and how they responded.
+            The letter grades displayed in restaurant windows tell a story, but not necessarily the one you would expect. 
+            They don't indicate which neighborhoods are "dirty" or which cuisines are "risky." 
+            Rather, they show which restaurants have been inspected, how often they have been inspected, and how they have responded.
           </p>
         </motion.div>
 
-        {/* Second paragraph */}
+        {/* P2 */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -55,15 +53,35 @@ export function Close() {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="font-serif text-lg sm:text-xl leading-[1.9] text-muted-foreground mb-12">
-            We came in expecting the data to confirm what we already believed. Instead, it
-            showed us the opposite. Cuisines we trust and cuisines we distrust scored
-            within a handful of points of each other. Boroughs we judge from the outside
-            looked just like the ones we celebrate. And when the score did shift, it sometimes
-            reflected the world outside the kitchen more than what was happening inside it.
+            We came in expecting the data to confirm our beliefs. 
+            Instead, it showed us the opposite. 
+            The scores of the cuisines we trusted and the ones we distrusted were only a few points apart. 
+            Boroughs that we judged from the outside looked just like the ones we celebrated. 
+            Sometimes, when the score shifted, 
+            it reflected the world outside the kitchen more than what was happening inside it.
           </p>
         </motion.div>
 
-        {/* Third paragraph */}
+        {/* P3 — Good news */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <p className="font-serif text-lg sm:text-xl leading-[1.9] text-muted-foreground mb-3">
+            The most important takeaway is actually reassuring. 
+            The system generally works well, and the feedback is overwhelmingly positive. 
+            Even where violations cluster, they are concentrated among a small group of restaurants. 
+            The top 15% of restaurants account for about half of all penalty points. 
+            The vast majority of kitchens across the city are safe, clean, and focused on feeding people.
+          </p>
+          <p className="font-sans text-xs uppercase tracking-[0.2em] text-primary/60 mb-12">
+            Full distribution and power-law analysis in the technical notebooks ↓
+          </p>
+        </motion.div>
+
+        {/* P4 — Two truths */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -71,13 +89,14 @@ export function Close() {
           transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="font-serif text-lg sm:text-xl leading-[1.9] text-muted-foreground mb-16">
-            An inspection score is not a verdict. It&apos;s a snapshot of a restaurant navigating
-            a system shaped by geography, timing, attention, and human judgment as much as
-            by what&apos;s on the stove.
+            However, the data reminds us of another truth: the system is human-made and, therefore, flawed. 
+            While inspection scores are helpful, they are not verdicts on cuisine or culture. 
+            They are snapshots shaped by timing, attention, and sometimes subtle biases that we don't see because we aren't looking for them. 
+            To accurately interpret these grades, we must leave our assumptions at the door.
           </p>
         </motion.div>
 
-        {/* Decorative divider */}
+        {/* Divider */}
         <motion.div
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
@@ -101,11 +120,10 @@ export function Close() {
             className="text-3xl sm:text-4xl md:text-5xl font-medium leading-snug text-foreground mb-6"
             style={{ fontFamily: 'var(--font-caveat)' }}
           >
-            The map lies. So do our instincts.
+            The kitchen is probably fine. 
           </p>
           <p className="font-serif text-base sm:text-lg italic text-muted-foreground/80 leading-relaxed">
-            Next time you walk past a restaurant — ask what you actually know,
-            and what you only assumed.
+            The next time you walk past a restaurant, take a moment to think about the difference between what you know and what you've assumed.
           </p>
         </motion.div>
 
