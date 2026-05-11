@@ -26,8 +26,11 @@ export function Exploration() {
   const [selectedGrades, setSelectedGrades] = useState<string[]>(['All'])
   const [stats, setStats] = useState<Stats>({ total: null, avgScore: null, inspections: null })
   const [mapReady, setMapReady] = useState(false)
+  const [showDots, setShowDots] = useState(true)
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
+  const requestIdRef = useRef(0)
+  const latestRequestIdRef = useRef(0)
 
   const toggleCuisine = (cuisine: string) => {
     setSelectedCuisines(prev =>
@@ -52,6 +55,9 @@ export function Exploration() {
       if (e.data.type === 'MAP_READY') {
         setMapReady(true)
       } else if (e.data.type === 'UPDATE_STATS') {
+        // Ignore stale responses from earlier filter changes
+        if (e.data.requestId !== undefined &&
+            e.data.requestId !== latestRequestIdRef.current) return
         setStats({
           total: e.data.total,
           avgScore: e.data.avgScore,
@@ -66,13 +72,17 @@ export function Exploration() {
   useEffect(() => {
     if (!mapReady || !iframeRef.current?.contentWindow) return
     const gradesPayload = selectedGrades.includes('All') ? [] : selectedGrades
+    requestIdRef.current += 1
+    latestRequestIdRef.current = requestIdRef.current
     iframeRef.current.contentWindow.postMessage({
       type: 'SET_FILTERS',
       borough: selectedBorough,
       cuisines: selectedCuisines,
       grades: gradesPayload,
+      showDots,
+      requestId: requestIdRef.current,
     }, '*')
-  }, [mapReady, selectedBorough, selectedCuisines, selectedGrades])
+  }, [mapReady, selectedBorough, selectedCuisines, selectedGrades, showDots])
 
   const fmt = (n: number | null) =>
     n == null ? '—' : n.toLocaleString('en-US')
@@ -201,6 +211,19 @@ export function Exploration() {
             The average score barely changes depending on the borough. Geography does not affect grades.
           </p>
           <div className="flex items-center gap-6 shrink-0">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowDots(v => !v)}
+              className={`px-3 py-1.5 text-xs font-sans transition-all duration-300 ${
+                showDots
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+              }`}
+            >
+              {showDots ? 'Hide pins' : 'Show pins'}
+            </motion.button>
+            <span className="h-6 w-px bg-border" />
             {[
               { label: 'Restaurants', value: fmt(stats.total) },
               { label: 'Inspections', value: fmt(stats.inspections) },
@@ -241,8 +264,6 @@ export function Exploration() {
             </div>
           )}
         </motion.div>
-
-
       </div>
     </section>
   )

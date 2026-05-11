@@ -31,7 +31,7 @@ export function Close() {
           </h2>
         </motion.div>
 
-        {/* P1 */}
+        {/* P1 — Bias hides */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -39,13 +39,13 @@ export function Close() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="font-serif text-lg sm:text-xl leading-[1.9] text-muted-foreground mb-12">
-            The letter grades displayed in restaurant windows tell a story, but not necessarily the one you would expect. 
-            They don't indicate which neighborhoods are "dirty" or which cuisines are "risky." 
-            Rather, they show which restaurants have been inspected, how often they have been inspected, and how they have responded.
+            Bias rarely announces itself. It hides in pattern recognition. In urgency. In caution.
+            In the quiet feeling that "this just makes sense." Our perceptions of restaurant hygiene
+            reveal more about our own biases than we might expect.
           </p>
         </motion.div>
 
-        {/* P2 */}
+        {/* P2 — What the data showed */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -53,46 +53,24 @@ export function Close() {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="font-serif text-lg sm:text-xl leading-[1.9] text-muted-foreground mb-12">
-            We came in expecting the data to confirm our beliefs. 
-            Instead, it showed us the opposite. 
-            The scores of the cuisines we trusted and the ones we distrusted were only a few points apart. 
-            Boroughs that we judged from the outside looked just like the ones we celebrated. 
-            Sometimes, when the score shifted, 
-            it reflected the world outside the kitchen more than what was happening inside it.
+            Cuisines we trust and cuisines we avoid scored within only a few points of each other.
+            Boroughs we judge from the outside looked remarkably similar to the ones we celebrate.
+            And when the scores did shift, they sometimes reflected forces outside the kitchen as
+            much as conditions inside it.
           </p>
         </motion.div>
 
-        {/* P3 — Good news */}
+        {/* P3 — Not a verdict */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="font-serif text-lg sm:text-xl leading-[1.9] text-muted-foreground mb-3">
-            The most important takeaway is actually reassuring. 
-            The system generally works well, and the feedback is overwhelmingly positive. 
-            Even where violations cluster, they are concentrated among a small group of restaurants. 
-            The top 15% of restaurants account for about half of all penalty points. 
-            The vast majority of kitchens across the city are safe, clean, and focused on feeding people.
-          </p>
-          <p className="font-sans text-xs uppercase tracking-[0.2em] text-primary/60 mb-12">
-            Full distribution and power-law analysis in the technical notebooks ↓
-          </p>
-        </motion.div>
-
-        {/* P4 — Two truths */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <p className="font-serif text-lg sm:text-xl leading-[1.9] text-muted-foreground mb-16">
-            However, the data reminds us of another truth: the system is human-made and, therefore, flawed. 
-            While inspection scores are helpful, they are not verdicts on cuisine or culture. 
-            They are snapshots shaped by timing, attention, and sometimes subtle biases that we don't see because we aren't looking for them. 
-            To accurately interpret these grades, we must leave our assumptions at the door.
+          <p className="font-serif text-lg sm:text-xl leading-[1.9] text-muted-foreground mb-12">
+            An inspection score is not a verdict. It's a snapshot of a restaurant moving through a
+            system shaped not only by food safety, but by geography, timing, public attention, and
+            human judgment.
           </p>
         </motion.div>
 
@@ -120,10 +98,10 @@ export function Close() {
             className="text-3xl sm:text-4xl md:text-5xl font-medium leading-snug text-foreground mb-6"
             style={{ fontFamily: 'var(--font-caveat)' }}
           >
-            The kitchen is probably fine. 
+            So the next time you choose where to eat, ask yourself:
           </p>
           <p className="font-serif text-base sm:text-lg italic text-muted-foreground/80 leading-relaxed">
-            The next time you walk past a restaurant, take a moment to think about the difference between what you know and what you've assumed.
+            Are you responding to evidence… or to a story your brain already believes?
           </p>
         </motion.div>
 
