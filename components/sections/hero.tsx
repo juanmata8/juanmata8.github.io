@@ -92,7 +92,8 @@ export function Hero() {
             transition={{ duration: 1, delay: 1.3, ease: "easeOut" }}
             className="mt-8 text-lg sm:text-xl font-serif italic max-w-md mx-auto text-menu-gold/80"
           >
-            Why the restaurants you avoid may be cleaner than the ones you love.
+            “If you follow your intuition, you will often misclassify a random event as a systematic pattern.”
+            — Daniel Kahneman, Thinking, Fast and Slow
           </motion.p>
         </div>
         
