@@ -345,16 +345,15 @@ export function CuisineHeatmap() {
 */}
           <p className="font-serif text-base text-muted-foreground leading-relaxed mb-3">
             The pattern for Asian cuisines is not random. A 2022 NYU study found that, during the pandemic,
-            health inspectors gave Asian restaurants significantly higher violation scores, while scores for other cuisines remained stable.
-            A peer-reviewed study in Nature Human Behavior corroborates this finding, linking the shift to rising anti-Asian sentiment during the pandemic.
+            health inspectors gave Asian restaurants significantly higher violation scores, while scores for other cuisines remained stable <a href="https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j">[1]</a>.
+            A peer-reviewed study in Nature Human Behavior corroborates this finding, linking the shift to rising anti-Asian sentiment during the pandemic <a href="https://www.nature.com/articles/s41562-022-01493-6">[2]</a>.
             The heatmap reflects that exact time period.
           </p>
 
           <p className="font-serif text-base text-muted-foreground leading-relaxed mb-3">
             <span className="text-primary font-medium">What the data can't tell you:</span>{' '}
-            whether individual inspectors acted intentionally. Bias in enforcement does not require intent;
-            a pattern is sufficient.
-            And a pattern is present here.
+            Whether individual inspectors acted intentionally is irrelevant. Bias in enforcement does not require intent; a pattern is sufficient. 
+            Studies have found that ethnic-owned restaurants are inspected more frequently and receive more critical violations in multiple U.S. cities, suggesting that a pattern is present <a href="https://www.sciencedirect.com/science/article/abs/pii/S0278431915000274">[3]</a>.
           </p>
         </motion.div>
 

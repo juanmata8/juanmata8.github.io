@@ -39,7 +39,7 @@ const datasets = [
 ]
 
 const sourceLinks = [
-  { label: 'Notebook', url: 'https://github.com/your-repo/notebook.ipynb' },
+  { label: 'Notebook', url: 'https://github.com/GQO5/Final_Social' },
   { label: 'Data', url: 'https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j' },
 ]
 
@@ -197,7 +197,7 @@ export function Footer() {
             {sourceLinks.map(({ label, url }) => (
               <a
                 key={label}
-                href={`#${url.toLowerCase()}`}
+                href={`${url.toLowerCase()}`}
                 className="font-sans text-sm text-primary hover:text-primary/70 underline underline-offset-4 decoration-primary/30 hover:decoration-primary/60 transition-all duration-300"
               >
                 {label}
@@ -224,11 +224,6 @@ export function Footer() {
 
           <ul className="space-y-2">
             {[
-              {
-                href: "https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j",
-                text: "NYC OpenData",
-                subtitle: "DOHMH NYC Restaurant Inspection Results, 2011–2025"
-              },
               {
                 href: "https://www.nyu.edu/about/news-publications/news/2022/december/study-finds-nyc-health-inspectors-gave-only-asian-restaurants-hi.html",
                 text: "NYU News (2022)",

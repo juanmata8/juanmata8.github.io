@@ -105,6 +105,10 @@ export function Close() {
           </p>
         </motion.div>
 
+        <p className="font-sans text-sm text-muted-foreground/60 mt-32">
+  If you enjoyed the story and want to explore the technical analysis, methodology, and all the charts behind the scenes, head to the Credits section at the bottom of the page.
+</p>
+
       </div>
     </section>
   )
