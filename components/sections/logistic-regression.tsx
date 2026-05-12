@@ -317,7 +317,7 @@ export function LogisticRegression() {
           className="border-t border-border pt-10"
         >
           <p className="font-sans text-xs uppercase tracking-[0.25em] text-muted-foreground mb-1">
-            Variable weight in the full model
+            Chef's note (for the more technically inclined): The full model has a variable weight.
           </p>
           <p className="font-serif text-sm text-muted-foreground/70 mb-6 max-w-xl">
             Each number shows how strongly a factor pushes toward or away from an A grade. 

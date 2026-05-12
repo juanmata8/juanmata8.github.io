@@ -290,7 +290,7 @@ export function StickyInvestigation() {
         className="max-w-xl mx-auto px-6 py-16 text-center"
       >
         <span className="font-sans font-bold text-s uppercase tracking-[0.4em] text-primary mb-4 block">
-  Light Beginnings
+  Warm-Ups
 </span>
         <h2
           className="text-4xl sm:text-5xl font-medium text-foreground"

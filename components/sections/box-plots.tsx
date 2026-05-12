@@ -118,7 +118,7 @@ export function BoxPlots() {
           className="mb-16"
         >
           <span className="font-sans font-bold text-s uppercase tracking-[0.4em] text-primary mb-4 block">
-            Warm-Ups
+            Today's Special
           </span>
           <h2
             className="text-4xl sm:text-5xl font-medium text-foreground mb-6"
@@ -127,7 +127,8 @@ export function BoxPlots() {
             Test your stereotypes
           </h2>
           <p className="font-serif text-lg text-muted-foreground leading-relaxed max-w-xl">
-            You just made your guess. Now, take a look at the chart. Each bar shows the distribution of inspection scores for a specific type of cuisine. The wider the bar, the greater the variation. The line in the middle shows the median score.
+            You just made your guess. Now, take a look at the chart. Each bar shows the distribution of inspection scores for a specific type of cuisine. 
+            The line in the middle shows the median score. The cleaner the restaurant, the closer its score is to the left. Does what you see match your expectations?
           </p>
         </motion.div>
 
@@ -158,7 +159,9 @@ export function BoxPlots() {
           className="mt-12 p-6 bg-secondary/30 border-l-2 border-primary"
         >
           <p className="font-serif text-base text-foreground leading-relaxed">
-            <span className="text-primary font-medium">The surprise:</span> The median score for each cuisine is <strong>12 or 13</strong>, comfortably within the A range. The cuisine you picked as the "worst" probably received a similar score to the one you gave to your favorite.
+            <span className="text-primary font-medium">The kitchen notes:</span> The median score for each cuisine is <strong>12 or 13</strong>, comfortably within the A range. 
+            The cuisine you picked as the "worst" probably received a similar score to the one you gave to your favorite. Take a look at the width of each bar. 
+            The wider the bar, the greater the variance. Some cuisines are more consistent than others.
           </p>
         </motion.div>
       </div>

@@ -32,10 +32,15 @@ const caveats = [
 ]
 
 const datasets = [
-  { name: "df_2026", desc: "Current state of NYC dining. 2011–2025, all periods.", tag: "cross-sectional" },
+  // { name: "df_2026", desc: "Current state of NYC dining. 2011–2025, all periods.", tag: "cross-sectional" },
   { name: "df_2026_no_covid", desc: "Same, with COVID pause removed.", tag: "cross-sectional" },
-  { name: "df_merged", desc: "2019 + 2026 combined. Includes closed restaurants.", tag: "longitudinal" },
+  // { name: "df_merged", desc: "2019 + 2026 combined. Includes closed restaurants.", tag: "longitudinal" },
   { name: "df_merged_no_covid", desc: "Same, COVID pause removed. Use for before/after comparisons.", tag: "longitudinal" },
+]
+
+const sourceLinks = [
+  { label: 'Notebook', url: 'https://github.com/your-repo/notebook.ipynb' },
+  { label: 'Data', url: 'https://data.cityofnewyork.us/Health/DOHMH-New-York-City-Restaurant-Inspection-Results/43nn-pn8j' },
 ]
 
 function CaveatRow({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
@@ -85,9 +90,15 @@ export function Footer() {
           transition={{ duration: 0.8, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
           className="font-serif text-muted-foreground leading-relaxed text-center mb-10 text-sm"
         >
-          Two public DOHMH snapshots — 2019 and 2026 — were cleaned and merged to cover 2011–2025.
-          The 2026 file alone only reflects active restaurants; merging recovers ~14,000 closed
-          establishments needed to avoid survivorship bias.
+          The DOHMH provided two public snapshots: one from 2019 and one from 2026. 
+          These were cleaned and merged to create a dataset covering the period from 2011 to 2025. 
+          The 2026 snapshot only includes active restaurants. 
+          Combining the two snapshots restored information on approximately 14,000 closed establishments, thereby avoiding survivorship bias.
+          <br></br>
+          Unless noted otherwise, all plots use the 2026 snapshot restricted to active restaurants. The year-over-year inspection heat map is an exception. \
+          It uses the merged dataset to recover closed establishments from the 2019 snapshot. 
+          This allows for a fair comparison of inspection intensity before and after the pandemic. 
+          This also enables us to evaluate whether the DOHMH increased inspection frequency in the post-pandemic period without conflating the decrease in pre-pandemic counts with restaurant closures.
         </motion.p>
 
         {/* Stat cards */}
@@ -138,7 +149,7 @@ export function Footer() {
           className="mb-12"
         >
           <p className="font-sans text-xs uppercase tracking-widest text-muted-foreground mb-3">
-            The four working datasets
+            The two working datasets
           </p>
           <div className="grid grid-cols-2 gap-2">
             {datasets.map(({ name, desc, tag }) => (
@@ -179,17 +190,17 @@ export function Footer() {
         >
           <div>
             <p className="font-serif text-sm text-foreground">
-              Data analysis and writing by [Author Name]
+              Data analysis and writing by Guillermo Quiroga Ocaña & Juan Manuel Rodriguez
             </p>
           </div>
           <div className="flex gap-6">
-            {['Notebook', 'Data', 'Code'].map((link) => (
+            {sourceLinks.map(({ label, url }) => (
               <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
+                key={label}
+                href={`#${url.toLowerCase()}`}
                 className="font-sans text-sm text-primary hover:text-primary/70 underline underline-offset-4 decoration-primary/30 hover:decoration-primary/60 transition-all duration-300"
               >
-                {link}
+                {label}
               </a>
             ))}
           </div>
@@ -232,11 +243,6 @@ export function Footer() {
                 href: "https://www.sciencedirect.com/science/article/abs/pii/S0278431915000274",
                 text: "Kim & Mattila (2015)",
                 subtitle: "Consumer responses to restaurant grading — Int. J. Hospitality Management"
-              },
-              {
-                href: "https://medium.com/@sam.weinger/looking-for-borough-bias-in-nyc-restaurant-inspection-results-e15640cd3f97",
-                text: "Weinger (2018)",
-                subtitle: "Looking for 'Borough Bias' in NYC restaurant inspection results"
               },
               {
                 href: "https://doi.org/10.1109/TVCG.2010.179",

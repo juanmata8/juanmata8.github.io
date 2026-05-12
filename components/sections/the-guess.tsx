@@ -169,7 +169,7 @@ function SurveyToast({ onClose }: { onClose: () => void }) {
               </span>
               <p className="font-sans text-[12px] leading-relaxed text-menu-gold/72">
                 <span className="text-menu-text font-medium">43%</span> said personal
-                experience shaped their view — but{' '}
+                experience shaped their view,  but{' '}
                 <span className="text-menu-text font-medium">25%</span> admitted it was
                 down to{' '}
                 <span className="text-menu-text font-medium">general stereotypes</span>,
@@ -186,7 +186,7 @@ function SurveyToast({ onClose }: { onClose: () => void }) {
               <p className="font-sans text-[12px] leading-relaxed text-menu-gold/72">
                 Most people rated sanitation as{' '}
                 <span className="text-menu-text font-medium">very important</span> when
-                choosing a restaurant — scoring it a 4 or 10 out of 10.
+                choosing a restaurant, scoring it a 4 or 10 out of 10.
               </p>
             </div>
           </div>
@@ -350,8 +350,8 @@ export function TheGuess() {
             </div>
 
             {/* Curious prompt */}
-            <p className="font-sans text-[11px] tracking-[0.05em] text-menu-border/45 mb-4">
-              But first — curious what 50 others said about cuisine perception?
+            <p className="font-sans text-[13px] tracking-[0.05em] text-menu-gold/80 mb-4">
+              But first, would you like to hear what 50 other people had to say about their perception of cuisine?
             </p>
 
             <motion.button
