@@ -216,9 +216,8 @@ export function CuisineHeatmap() {
             The system has a pattern too
           </h2>
           <p className="font-serif text-lg text-muted-foreground leading-relaxed">
-            Each cell shows the average inspection score for a specific cuisine compared to the citywide average for that year.
-            Warmer colors indicate below-average scores and cooler colors indicate above-average scores.
-            The hatched columns represent the period from 2020 to 2021, during which grading was paused due to the pandemic.
+            Each cell compares the average inspection score of a particular cuisine to the citywide average for that same year. In NYC's system, lower scores indicate fewer violations. 
+            Cooler greens indicate cuisines that perform better than average, while warmer reds indicate cuisines with more violations than average. Hatched columns mark 2020–2021, when grading was paused due to the pandemic.
           </p>
         </motion.div>
 
